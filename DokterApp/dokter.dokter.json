@@ -1,0 +1,29 @@
+[{
+  "_id": {
+    "$oid": "662e5a1c8cef409d615685c2"
+  },
+  "idDokter": "1",
+  "namaDokter": "Dr. Humam",
+  "poli": "Kulit",
+  "deskripsi": "Lulusan Uniga Aceh",
+  "foto": "/image/humam.jpg"
+{
+  "_id": {
+    "$oid": "662e5a938cef409d615685c3"
+  },
+  "idDokter": "2",
+  "namaDokter": "Dr. Deni",
+  "poli": "Gigi",
+  "deskripsi": "Lulusan Untat Depok",
+  "foto": "/image/deni.jpg"
+},
+{
+  "_id": {
+    "$oid": "662e5ab38cef409d615685c4"
+  },
+  "idDokter": "3",
+  "namaDokter": "Dr. Afar",
+  "poli": "Umum",
+  "deskripsi": "Lulusan Unkris Bekasi",
+  "foto": "/image/afar.jpg"
+}]

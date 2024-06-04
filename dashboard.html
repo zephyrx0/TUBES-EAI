@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: "Lato", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Sidebar Navigation */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #ccc;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #fff;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  font-size: 30px;
+  margin-left: 50px;
+}
+
+.menu-icon {
+  font-size: 30px;
+  cursor: pointer;
+  color: #007bff;
+}
+
+/* Media Query for Mobile Devices */
+@media screen and (max-width: 768px) {
+  .sidenav {
+    width: 200px;
+    left: 0;
+  }
+
+  .sidenav a {
+    font-size: 16px;
+  }
+
+  .sidenav .closebtn {
+    right: 5px;
+  }
+
+  .container {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 10px;
+  }
+
+  .overlay.active {
+  display: block;
+}
+
+  .btn {
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Daftar Janji Dokter</h2>
+  <table id="janjiTable">
+    <thead>
+      <tr>
+        <th>Dokter</th>
+        <th>Tanggal</th>
+        <th>Jam</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data janji dokter akan dimasukkan di sini -->
+      <tr>
+        <td>Nama Dokter 1</td>
+        <td>2024-05-01</td>
+        <td>08:00</td>
+      </tr>
+      <tr>
+        <td>Nama Dokter 2</td>
+        <td>2024-05-02</td>
+        <td>09:00</td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn" onclick="buatJanji()">Buat Janji</button>
+</div>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">Menu</a>
+  <a href="#">Buat Janji</a>
+  <a href="#">Ulasan</a>
+  <a href="#">Logout</a>
+</div>
+
+<span class="menu-icon" onclick="openNav()">&#9776;</span>
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "200px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+function buatJanji() {
+  // Fungsi untuk membuat janji
+  alert('Fungsi ini belum diimplementasikan.');
+}
+</script>
+   
+</body>
+</html>

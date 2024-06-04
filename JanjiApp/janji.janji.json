@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "662e5b478cef409d615685ca"
+  },
+  "idJanji": "1",
+  "idUser": "1",
+  "namaUser": "Sumbul",
+  "idDokter": "1",
+  "namaDokter": "Dr. Humam",
+  "poli": "Kulit",
+  "tanggalJanji": "24-01-2024",
+  "keterangan": "Gatal, kayak scabies"
+},
+{
+  "_id": {
+    "$oid": "662e5c018cef409d615685cb"
+  },
+  "idJanji": "2",
+  "idUser": "2",
+  "namaUser": "Husnul",
+  "idDokter": "2",
+  "namaDokter": "Dr. Deni",
+  "poli": "Gigi",
+  "tanggalJanji": "03-10-2024",
+  "keterangan": "Gigi berlubang"
+},
+{
+  "_id": {
+    "$oid": "662e5c748cef409d615685cc"
+  },
+  "idJanji": "3",
+  "idUser": "3",
+  "namaUser": "Husaini",
+  "idDokter": "3",
+  "namaDokter": "Dr. Afar",
+  "poli": "Umum",
+  "tanggalJanji": "18-09-2024",
+  "keterangan": "Batuk berdahak"
+}]

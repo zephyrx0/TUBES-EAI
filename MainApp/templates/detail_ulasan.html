@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Ulasan</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Detail Ulasan</h2>
+        <div id="detailUlasan"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // $(document).ready(function(){
+        //   // Extract parameter from URL
+        //   var idUlasan = getParameterByName('idUlasan');
+        
+        //   // Fetch and display ulasan detail
+        //   $.ajax({
+        //     type: 'GET',
+        //     url: '/detailulasan',
+        //     data: { idUlasan: idUlasan },
+        //     dataType: 'json',
+        //     success: function(response) {
+        //       if (response.status === 200) {
+        //         var ulasan = response.data;
+        //         var detailHtml = "<p><strong>ID Ulasan:</strong> " + ulasan.idUlasan + "</p>" +
+        // "<p><strong>ID Dokter:</strong> " + ulasan.idDokter + "</p>" +
+        //                          "<p><strong>ID User:</strong> " + ulasan.idUser + "</p>" +
+        //                          "<p><strong>Nama User:</strong> " + ulasan.namaUser + "</p>" +
+        //                          "<p><strong>Nama Dokter:</strong> " + ulasan.namaDokter + "</p>" +
+        //                          "<p><strong>Poli:</strong> " + ulasan.poli + "</p>" +
+        //                          "<p><strong>Ulasan:</strong> " + ulasan.ulasan + "</p>";
+        //         $("#detailUlasan").html(detailHtml);
+        //       } else {
+        //         $("#detailUlasan").html("<p>Ulasan not found.</p>");
+        //       }
+        //     },
+        //     error: function(xhr, textStatus, errorThrown) {
+        //       console.log(xhr.responseText);
+        //       $("#detailUlasan").html("<p>Error fetching ulasan.</p>");
+        //     }
+        //   });
+        // });
+
+        async function fetchUlasanData(idUlasan) {
+  try {
+    const response = await fetch(`http://localhost:3002/ulasan/${idUlasan}`);
+    const data = await response.json();
+
+    if (data.status === 200) {
+      const detailUlasanElement = document.getElementById("detailUlasan");
+
+      if (data.data) {
+        detailUlasanElement.innerHTML = `
+          <p><strong>ID Ulasan:</strong> ${data.data.idUlasan}</p>
+          <p><strong>ID Dokter:</strong> ${data.data.idDokter}</p>
+          <p><strong>ID User:</strong> ${data.data.idUser}</p>
+          <p><strong>Nama User:</strong> ${data.data.namaUser}</p>
+          <p><strong>Nama Dokter:</strong> ${data.data.namaDokter}</p>
+          <p><strong>Poli:</strong> ${data.data.poli}</p>
+          <p><strong>Ulasan:</strong> ${data.data.ulasan}</p>
+        `;
+      } else {
+        detailUlasanElement.innerHTML = "<p>Ulasan tidak ditemukan.</p>";
+      }
+    } else {
+      console.error('Gagal mendapatkan data ulasan:', data.message);
+    }
+  } catch (error) {
+    console.error('Gagal mendapatkan data ulasan:', error);
+  }
+}
+
+fetchUlasanData(1); // Ganti dengan id ulasan yang sesuai
+        
+        </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #4CAF50; /* Warna hijau */
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+        }
+
+        .navbar button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .navigation {
+            background-color: #4CAF50; /* Warna hijau */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navigation a {
+            color: white;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .container {
+            margin: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50; /* Warna hijau */
+            color: white;
+        }
+
+        .btn {
+            background-color: #4CAF50; /* Warna hijau */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049; /* Warna hijau yang lebih gelap saat hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Dashboard</h1>
+        <button onclick="toggleNavigation()">Menu</button>
+    </div>
+
+    <div class="container">
+        <h2>Daftar Janji Dokter</h2>
+        <table id="janjiTable">
+            <thead>
+                <tr>
+                    <th>Nama Pasien</th>
+                    <th>Nama Dokter</th>
+                    <th>Poli</th>
+                    <th>Tanggal Janji</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data janji dokter akan dimasukkan di sini -->
+            </tbody>
+        </table>
+        <button class="btn" onclick="buatJanji()">Buat Janji</button>
+    </div>
+
+    <div class="navigation" id="navigation">
+        <a href="#">Buat Janji</a>
+        <a href="{{ url_for('listDokter') }}">Daftar Dokter</a>
+        <!-- Tombol logout dalam HTML -->
+        <form id="logoutForm" action="/logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleNavigation() {
+            var navigation = document.getElementById("navigation");
+            if (navigation.style.display === "block") {
+                navigation.style.display = "none";
+            } else {
+                navigation.style.display = "block";
+            }
+        }
+
+        async function fetchJanjiData() {
+            try {
+                const response = await fetch('http://localhost:3001/infojanji');
+                const data = await response.json();
+                const janjiTableBody = document.querySelector('#janjiTable tbody');
+
+                // Menghapus data yang ada di dalam tabel
+                janjiTableBody.innerHTML = '';
+
+                // Mengisi tabel dengan data yang diterima dari server
+                data.forEach(janji => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${janji.namaUser}</td>
+                        <td>${janji.namaDokter}</td>
+                        <td>${janji.poli}</td>
+                        <td>${janji.tanggalJanji}</td>
+                        <td>${janji.keterangan}</td>
+                    `;
+                    janjiTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Gagal mendapatkan data janji:', error);
+            }
+        }
+
+        fetchJanjiData(); // Panggil fungsi untuk mengambil data janji saat halaman dimuat
+
+        document.getElementById("logoutButton").addEventListener("click", function() {
+        // Melakukan permintaan GET ke route logout di MainApp saat tombol logout diklik
+        fetch("http://localhost::3004/logout", {
+                    method: "GET",
+                    credentials: "same-origin" // Mengirim kredensial (misalnya cookie) dengan permintaan
+                })
+                .then(response => {
+                    // Periksa kode status respons
+                    if (response.ok) {
+                        // Redirect ke halaman login jika berhasil logout
+                        window.location.href = "/login";
+                    } else {
+                        // Tangani kesalahan jika ada
+                        console.error("Gagal melakukan logout");
+                    }
+                })
+                .catch(error => {
+                    // Tangani kesalahan jaringan atau permintaan
+                    console.error("Error:", error);
+                });
+    });
+    </script>
+</body>
+</html>

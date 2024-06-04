@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Ulasan</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Tambah Ulasan</h2>
+        <form id="formUlasan">
+            <div class="form-group">
+                <label for="idDokter">ID Dokter:</label>
+                <input type="text" class="form-control" id="idDokter" placeholder="Masukkan ID Dokter" required>
+            </div>
+            <div class="form-group">
+                <label for="idUser">ID User:</label>
+                <input type="text" class="form-control" id="idUser" placeholder="Masukkan ID User" required>
+            </div>
+            <div class="form-group">
+                <label for="namaUser">Nama User:</label>
+                <input type="text" class="form-control" id="namaUser" placeholder="Masukkan Nama User" required>
+            </div>
+            <div class="form-group">
+                <label for="namaDokter">Nama Dokter:</label>
+                <input type="text" class="form-control" id="namaDokter" placeholder="Masukkan Nama Dokter" required>
+            </div>
+            <div class="form-group">
+                <label for="poli">Poli:</label>
+                <input type="text" class="form-control" id="poli" placeholder="Masukkan Poli" required>
+            </div>
+            <div class="form-group">
+                <label for="ulasan">Ulasan:</label>
+                <textarea class="form-control" id="ulasan" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#formUlasan").submit(function(event){
+                event.preventDefault();
+                var idDokter = $("#idDokter").val();
+                var idUser = $("#idUser").val();
+                var namaUser = $("#namaUser").val();
+                var namaDokter = $("#namaDokter").val();
+                var poli = $("#poli").val();
+                var ulasan = $("#ulasan").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ulasan",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        idDokter: idDokter,
+                        idUser: idUser,
+                        namaUser: namaUser,
+                        namaDokter: namaDokter,
+                        poli: poli,
+                        ulasan: ulasan
+                    }),
+                    success: function(response){
+                        alert(response.message);
+                        // Clear form fields after successful submission
+                        $("#formUlasan")[0].reset();
+                    },
+                    error: function(xhr, status, error){
+                        console.error(error);
+                        alert("Failed to submit ulasan. Please try again.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
