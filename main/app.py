@@ -33,6 +33,12 @@ def get_rawat_inap():
     response = requests.get('http://127.0.0.1:5005/rawat_inap')
     return response.json()
 
+#layanan klinik
+
+def get_klinik():
+    response = requests.get('http://127.0.0.1:5006/klinik')
+    return response.json()
+
 
 @app.route('/')
 def home():
@@ -57,6 +63,10 @@ def riwayat_page():
 @app.route('/rawat_inap')
 def rawat_inap_page():
     return render_template('rawat_inap.html')
+
+@app.route('/klinik')
+def klinik_page():
+    return render_template('klinik.html')
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000) 
