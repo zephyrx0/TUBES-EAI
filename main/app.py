@@ -39,6 +39,18 @@ def get_klinik():
     response = requests.get('http://127.0.0.1:5006/klinik')
     return response.json()
 
+#layanan obat
+
+def get_obat():
+    response = requests.get('http://127.0.0.1:5007/obat')
+    return response.json()
+
+#layanan alat medis
+
+def get_alat_medis():
+    response = requests.get('http://127.0.0.1:5008/alat_medis')
+    return response.json()
+
 
 @app.route('/')
 def home():
@@ -67,6 +79,14 @@ def rawat_inap_page():
 @app.route('/klinik')
 def klinik_page():
     return render_template('klinik.html')
+
+@app.route('/obat')
+def obat_page():
+    return render_template('obat.html')
+
+@app.route('/alat_medis')
+def alat_medis_page():
+    return render_template('alat_medis.html')
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000) 
