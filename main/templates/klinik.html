@@ -31,11 +31,11 @@
             <div class="nav-menu">
               <ul>
                 <li class="active"><a href="{{ url_for('home') }}" class="d-flex align-items-center"><span class="wrap-icon icon-home2 mr-3"></span><span class="menu-text">Home</span></a></li>
-                <li><a href="#" class="d-flex align-items-center"><span class="wrap-icon icon-videocam mr-3"></span><span class="menu-text">Pasien</span></a></li>
-                <li><a href="#" class="d-flex align-items-center"><span class="wrap-icon icon-book mr-3"></span><span class="menu-text">Dokter</span></a></li>
-                <li><a href="#" class="d-flex align-items-center"><span class="wrap-icon icon-shopping-cart mr-3"></span><span class="menu-text">Janji</span></a></li>
-                <li><a href="#" class="d-flex align-items-center"><span class="wrap-icon icon-pie-chart mr-3"></span><span class="menu-text">Riwayat</span></a></li>
-                <li><a href="#" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Rawat Inap</span></a></li>
+                <li><a href="{{ url_for('pasien_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-videocam mr-3"></span><span class="menu-text">Pasien</span></a></li>
+                <li><a href="{{ url_for('dokter_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-book mr-3"></span><span class="menu-text">Dokter</span></a></li>
+                <li><a href="{{ url_for('janji_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-shopping-cart mr-3"></span><span class="menu-text">Janji</span></a></li>
+                <li><a href="{{ url_for('riwayat_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-pie-chart mr-3"></span><span class="menu-text">Riwayat</span></a></li>
+                <li><a href="{{ url_for('rawat_inap_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Rawat Inap</span></a></li>
                 <li><a href="{{ url_for('klinik_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Klinik</span></a></li>
       
               </ul>
