@@ -1,0 +1,33 @@
+<!-- templates/riwayat.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Riwayat Medis</h1>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID Riwayat</th>
+                <th>Nama Pasien</th>
+                <th>Riwayat</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data riwayat dummy -->
+            {% for riw in riwayat %}
+            <tr>
+                <td>{{ riw['riwayat_id'] }}</td>
+                <td>{{ riw['nama_pasien'] }}</td>
+                <td>{{ riw['riwayat_penyakit'] }}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm">Lihat</button>
+                    <button class="btn btn-warning btn-sm">Edit</button>
+                    <button class="btn btn-danger btn-sm">Hapus</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

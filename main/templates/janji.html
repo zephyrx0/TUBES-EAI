@@ -1,0 +1,35 @@
+<!-- templates/janji.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Daftar Janji</h1>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID Janji</th>
+                <th>Nama Pasien</th>
+                <th>Nama Dokter</th>
+                <th>Tanggal Janji</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data janji dummy -->
+            {% for janji in janji %}
+            <tr>
+                <td>{{ janji['janji_id'] }}</td>
+                <td>{{ janji['nama_pasien'] }}</td>
+                <td>{{ janji['nama_dokter'] }}</td>
+                <td>{{ janji['tanggal_janji'] }}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm">Lihat</button>
+                    <button class="btn btn-warning btn-sm">Edit</button>
+                    <button class="btn btn-danger btn-sm">Hapus</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

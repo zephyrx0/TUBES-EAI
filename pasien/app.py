@@ -56,7 +56,9 @@ def detailpasien():
         data = []
         for row in cursor.fetchall():
             data.append(dict(zip(kolom,row)))
-
+        for item in data:
+            tanggal_lahir_date = item['tanggal_lahir']
+            item['tanggal_lahir'] = tanggal_lahir_date.strftime("%Y-%m-%d")
         
         return jsonify(data)
         cursor.close()

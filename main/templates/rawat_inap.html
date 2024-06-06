@@ -1,0 +1,39 @@
+<!-- templates/rawat_inap.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Rawat Inap</h1>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID Rawat Inap</th>
+                <th>Nama Pasien</th>
+                <th>Nama Dokter</th>
+                <th>Ruangan</th>
+                <th>Tanggal Masuk</th>
+                <th>Tanggal Keluar</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rawat inap dummy -->
+            {% for rawat in rawat_inap %}
+            <tr>
+                <td>{{ rawat['rawat_inap_id'] }}</td>
+                <td>{{ rawat['nama_pasien'] }}</td>
+                <td>{{ rawat['nama_dokter'] }}</td>
+                <td>{{ rawat['ruangan'] }}</td>
+                <td>{{ rawat['tanggal_masuk'] }}</td>
+                <td>{{ rawat['tanggal_keluar'] }}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm">Lihat</button>
+                    <button class="btn btn-warning btn-sm">Edit</button>
+                    <button class="btn btn-danger btn-sm">Hapus</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

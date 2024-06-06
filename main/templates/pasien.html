@@ -1,0 +1,36 @@
+<!-- templates/pasien.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Daftar Pasien</h1>
+    <a href="/pasien/add"><button class="btn btn-primary btn-sm">Tambah</button></a>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Tanggal Lahir</th>
+                <th>Alamat</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data pasien dummy -->
+            {% for pas in pasien %}
+            <tr>
+                <td>{{ pas['pasien_id'] }}</td>
+                <td>{{ pas['nama'] }}</td>
+                <td>{{ pas['tanggal_lahir'] }}</td>
+                <td>{{ pas['alamat'] }}</td>
+                <td>
+                    <a href="/detailpasien/{{ pas['pasien_id'] }}" class="btn btn-primary btn-sm">Lihat</a>
+                    <a href="/pasien/edit/{{ pas['pasien_id'] }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="/pasien/delete/{{ pas['pasien_id'] }}" class="btn btn-danger btn-sm">Hapus</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

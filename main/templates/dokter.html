@@ -1,0 +1,33 @@
+<!-- templates/dokter.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Daftar Dokter</h1>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Poli</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data dokter dummy -->
+            {% for dok in dokter %}
+            <tr>
+                <td>{{ dok['dokter_id'] }}</td>
+                <td>{{ dok['nama'] }}</td>
+                <td>{{ dok['poli'] }}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm">Lihat</button>
+                    <button class="btn btn-warning btn-sm">Edit</button>
+                    <button class="btn btn-danger btn-sm">Hapus</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
