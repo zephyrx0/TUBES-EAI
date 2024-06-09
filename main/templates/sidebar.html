@@ -100,6 +100,12 @@
                     </li>
                 </ul>
             </div>
+            <div class="logout-button">
+                <a href="{{ url_for('logout') }}" id="logout-button" class="btn btn-danger w-100 d-flex align-items-center justify-content-center">
+                    <span class="wrap-icon icon-sign-out-alt mr-3"></span>
+                    <span class="menu-text">Logout</span>
+                </a>
+            </div>          
         </div>
     </aside>
 
@@ -112,6 +118,22 @@
             return false;
         });
     });
+
+    var logoutButton = document.getElementById("logout-button");
+
+// Menambahkan event listener untuk klik pada tombol logout
+logoutButton.addEventListener("click", function(event) {
+    // Mencegah perilaku default dari link
+    event.preventDefault();
+
+    // Konfirmasi logout
+    var confirmation = confirm("Apakah Anda yakin ingin logout?");
+
+    // Jika pengguna mengonfirmasi logout, lanjutkan ke halaman logout
+    if (confirmation) {
+        window.location.href = logoutButton.getAttribute("href");
+    }
+});
     </script>
 
     <!-- CSS untuk styling hamburger menu dan sidebar -->
@@ -188,6 +210,41 @@
     .sidebar {
             position: fixed;
         }
+    .logout-button {
+        padding: 20px;
+        background-color: #ff4d4d; /* Warna background merah untuk logout */
+    }
+
+    .btn-danger {
+        background-color: #ff4d4d; /* Warna background merah untuk tombol logout */
+        color: #fff; /* Warna teks putih */
+        border-radius: 5px;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background-color 0.3s;
+    }
+
+    .btn-danger:hover {
+        background-color: #ff3333; /* Warna background merah yang lebih gelap saat hover */
+    }
+
+    .logout-button .menu-text {
+    display: none; /* Sembunyikan teks "Logout" */
+}
+
+.logout-button .wrap-icon {
+    margin-right: 0; /* Jarak antara ikon dan batas kanan tombol */
+}
+
+.sidebar.open .logout-button .menu-text {
+    display: inline-block; /* Tampilkan teks "Logout" kembali saat sidebar terbuka */
+}
+
+.sidebar.open .logout-button .wrap-icon {
+    margin-right: 10px; /* Kembalikan jarak antara ikon dan batas kanan tombol saat sidebar terbuka */
+}
+
     </style>
 </body>
 </html>

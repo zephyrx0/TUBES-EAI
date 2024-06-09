@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F5E1FD; /* Warna abu-abu muda */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff; /* Warna putih */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 900px;
+            display: flex;
+        }
+
+        .login-form {
+            flex: 1; /* Menggunakan sisa ruang di samping gambar */
+            padding: 40px;
+            text-align: center;
+        }
+
+        .login-form h1 {
+            color: #ECA869; /* Warna biru */
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            font-weight: bold;
+            color: #6C6997; /* Warna biru */
+            margin-bottom: 8px;
+            text-align: left;
+            display: block;
+        }
+
+        .login-form input[type="email"],
+        .login-form input[type="password"] {
+            padding: 12px;
+            border: 1px solid #B5D5C5; /* Warna abu-abu */
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .login-form input[type="submit"] {
+            background-color: #ECA869; /* Warna biru */
+            color: #fff;
+            border: none;
+            padding: 14px 20px;
+            width: 140px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #FF7B2A; /* Warna biru yang lebih gelap saat hover */
+            color: black;
+        }
+
+        .login-form input[type="submit"]:focus {
+            outline: none;
+        }
+
+        .image-container {
+            flex: 1; /* Menggunakan sisa ruang di samping form */
+            background-image: url('/static/images/login.png'); /* Ganti dengan URL gambar login.png */
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Tampilkan gambar di atas form pada layar kecil */
+            }
+
+            .image-container {
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                width: 100%;
+                height: 300px; /* Ubah tinggi gambar sesuai kebutuhan */
+            }
+
+            .login-form {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+                padding-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container"></div>
+        <div class="login-form">
+            <h1>Login</h1>
+            <form id="loginForm" method="POST">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript untuk melakukan submit form menggunakan Fetch API -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form submission handler
+            document.getElementById('loginForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                
+                // Get form data
+                const formData = new FormData(this);
+
+                // Send POST request to login endpoint
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // If login successful, redirect to home page
+                        window.location.replace('/home');
+                    } else if (response.status === 401) {
+                        // If unauthorized, display invalid email or password message
+                        alert('Invalid email or password.');
+                    } else {
+                        // For other errors, display generic error message
+                        alert('An error occurred. Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again later.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
