@@ -1,17 +1,339 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Obat{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-{% block title %}Obat{% endblock %}
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
+        body {
+            background-color: #F5E1FD;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 170px;
+            width: 1400px;
+            height: 350px;
+            position: relative;
+            margin-top: 100px;
+            z-index: 2;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #333;
+        }
+        .btn-tambah {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ECA869;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+        .btn-tambah:hover {
+            background-color: #FF7B2A;
+        }
+        table {
+            width: 95%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #6C6997;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .hiasan1 {
+            position: absolute;
+            top: -101px;
+            right: 0px;
+            z-index: 1;
+            width: 400px;
+        }
+        .hiasan2 {
+            position: absolute;
+            bottom: -92px;
+            left: 80px;
+            z-index: 1;
+            width: 450px;
+        }
+    </style>
+</head>
+<body>
 
 {% block content %}
     {% set active_page = 'obat' %}
     {% include 'sidebar.html' %}
+    <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1">
     <main class="content">
-        <!-- Isi konten utama di sini -->
-        <h1>Selamat datang di halaman obat!</h1>
-        <p>Ini adalah konten spesifik untuk halaman obat.</p>
+        <div class="header-content">
+            <h1>Data Obat</h1>
+            <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Obat</th>
+                    <th>Deskripsi</th>
+                    <th>Dosis</th>
+                    <th>Efek Samping</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Isi tabel obat -->
+                {% for obat in obat %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ obat.nama_obat }}</td>
+                    <td>{{ obat.deskripsi }}</td>
+                    <td>{{ obat.dosis }}</td>
+                    <td>{{ obat.efek_samping }}</td>
+                    <td>
+                        <!-- Tombol Edit dengan ikon -->
+                        <button type="button" class="btn btn-primary btn-sm" onclick="edit_obat('{{ obat._id }}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <!-- Tombol Hapus dengan ikon -->
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ obat._id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </main>
-    {% endblock %}
+    <img src="static/images/hiasan2.png" alt="hiasan2" class="hiasan2">
 
-    {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    {% endblock %}
+    <!-- Modal Tambah -->
+    <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Obat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="tambahForm">
+                        <div class="form-group">
+                            <label for="nama">Nama Obat</label>
+                            <input type="text" class="form-control" id="nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="deskripsi">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="dosis">Dosis</label>
+                            <input type="text" class="form-control" id="dosis">
+                        </div>
+                        <div class="form-group">
+                            <label for="efek_samping">Efek Samping</label>
+                            <textarea class="form-control" id="efek_samping" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Obat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" id="edit_obat_id">
+                        <div class="form-group">
+                            <label for="edit_nama">Nama Obat</label>
+                            <input type="text" class="form-control" id="edit_nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_deskripsi">Deskripsi</label>
+                            <textarea class="form-control" id="edit_deskripsi" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_dosis">Dosis</label>
+                            <input type="text" class="form-control" id="edit_dosis">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_efek_samping">Efek Samping</label>
+                            <textarea class="form-control" id="edit_efek_samping" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesEdit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#saveChanges').click(function() {
+                var data = {
+                    nama_obat: $('#nama').val(),
+                    deskripsi: $('#deskripsi').val(),
+                    dosis: $('#dosis').val(),
+                    efek_samping: $('#efek_samping').val()
+                };
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/obat',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        if (response && response.message) {
+                            alert(response.message);
+                        } else {
+                            console.log("Response or message property is undefined");
+                        }
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+            function edit_obat(obat_id) {
+                $.ajax({
+                    url: `http://127.0.0.1:5000/obat/${obat_id}`,
+                    type: 'GET',
+                    success: function(response) {
+                        if (response && !response.error) {
+                            $('#edit_obat_id').val(obat_id);
+                            $('#edit_nama').val(response.nama_obat);
+                            $('#edit_deskripsi').val(response.deskripsi);
+                            $('#edit_dosis').val(response.dosis);
+                            $('#edit_efek_samping').val(response.efek_samping);
+                            $('#editModal').modal('show');
+                        } else {
+                            console.log("Data obat tidak ditemukan");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            }
+
+            $('#saveChangesEdit').click(function() {
+                var obat_id = $('#edit_obat_id').val();
+                var data = {
+                    nama_obat: $('#edit_nama').val(),
+                    deskripsi: $('#edit_deskripsi').val(),
+                    dosis: $('#edit_dosis').val(),
+                    efek_samping: $('#edit_efek_samping').val()
+                };
+                $.ajax({
+                    url: `http://127.0.0.1:5000/obat/${obat_id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        if (response && response.message) {
+                            alert(response.message);
+                        } else {
+                            console.log("Response or message property is undefined");
+                        }
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+            $(document).on('click', '.btn-delete', function() {
+                var obat_id = $(this).data('id');
+                if (confirm('Apakah Anda yakin ingin menghapus data obat ini?')) {
+                    $.ajax({
+                        url: `http://127.0.0.1:5000/obat/${obat_id}`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            if (response && response.message) {
+                                alert(response.message);
+                                location.reload(); // Reload halaman setelah penghapusan berhasil
+                            } else {
+                                console.log("Response or message property is undefined");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                        }
+                    });
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}
+</body>
+</html>
