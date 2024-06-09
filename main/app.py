@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 from flask import Flask , request, render_template, jsonify, redirect, url_for
-=======
-from flask import Flask, render_template, request, jsonify
->>>>>>> 13ad35a7a99b9b44fe8816033f11d6c772da7dac
 import requests
 
 app = Flask(__name__)
@@ -65,7 +61,6 @@ def get_pasien():
     response = requests.get('http://127.0.0.1:5001/pasien')
     return response.json()
 
-<<<<<<< HEAD
 def get_pasien_by_id(pasien_id):
     response = requests.get(f'http://127.0.0.1:5001/detailpasien?pasien_id={pasien_id}')
     return response.json()
@@ -114,9 +109,6 @@ def get_dokter():
 
 #layanan janji
 
-=======
-# layanan janji
->>>>>>> 13ad35a7a99b9b44fe8816033f11d6c772da7dac
 def get_janji():
     response = requests.get('http://127.0.0.1:5003/janji')
     return response.json()
@@ -150,7 +142,6 @@ def get_alat_medis():
 def home():
     return render_template('home.html', active_page='home')
 
-<<<<<<< HEAD
 
 
 @app.route('/dokter')
@@ -190,24 +181,6 @@ def rawat_inap_page():
         r['nama_pasien'] = pasien.get(r['pasien_id'], 'Unknown')
         r['nama_dokter'] = dokter.get(r['dokter_id'], 'Unknown')
     return render_template('rawat_inap.html', rawat_inap=rawat_inap)
-=======
-@app.route('/pasien')
-def pasien_page():
-    return render_template('pasien.html', active_page='pasien_page')
-
-
-@app.route('/janji')
-def janji_page():
-    return render_template('janji.html', active_page='janji_page')
-
-@app.route('/riwayat')
-def riwayat_page():
-    return render_template('riwayat.html', active_page='riwayat_page')
-
-@app.route('/rawat_inap')
-def rawat_inap_page():
-    return render_template('rawat_inap.html', active_page='rawat_inap_page')
->>>>>>> 13ad35a7a99b9b44fe8816033f11d6c772da7dac
 
 @app.route('/klinik')
 def klinik_page():
