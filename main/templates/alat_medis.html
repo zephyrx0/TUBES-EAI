@@ -123,80 +123,83 @@
     {% include 'sidebar.html' %}
     <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1">
     <main class="content">
-        <div class="header-content">
-            <h1>Data Alat Medis</h1>
-            <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>id_alat_medis</th>
-                    <th>nama_alat_medis</th>
-                    <th>kategori</th>
-                    <th>merk</th>
-                    <th>model</th>
-                    <th>lokasi</th>
-                    <th>status</th>
-                    <th>aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Tambahkan data lainnya di sini -->
-            </tbody>
-        </table>
-    </main>
-    <img src="static/images/hiasan2.png" alt="hiasan2" class="hiasan2">
-
-    <!-- Modal -->
-    <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Alat Medis</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="id_alat_medis">ID Alat Medis</label>
-                            <input type="text" class="form-control" id="id_alat_medis">
-                        </div>
-                        <div class="form-group">
-                            <label for="nama_alat_medis">Nama Alat Medis</label>
-                            <input type="text" class="form-control" id="nama_alat_medis">
-                        </div>
-                        <div class="form-group">
-                            <label for="kategori">Kategori</label>
-                            <input type="text" class="form-control" id="kategori">
-                        </div>
-                        <div class="form-group">
-                            <label for="merk">Merk</label>
-                            <input type="text" class="form-control" id="merk">
-                        </div>
-                        <div class="form-group">
-                            <label for="model">Model</label>
-                            <input type="text" class="form-control" id="model">
-                        </div>
-                        <div class="form-group">
-                            <label for="lokasi">Lokasi</label>
-                            <input type="text" class="form-control" id="lokasi">
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <input type="text" class="form-control" id="status">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+      <h1>Selamat datang di halaman alat medis!</h1>
+      <p>Ini adalah konten spesifik untuk halaman alat medis.</p>
+      <h2>Daftar Klinik</h2>
+      <table class="styled-table">
+          <thead>
+              <tr>
+                  <th>No</th>
+                  <th>Nama Alat</th>
+                  <th>Deskripsi</th>
+                  <th>Jumlah</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for fungsi in medis %}
+              <tr>
+                <td>{{ fungsi['alat_id'] }}</td>
+                <td>{{ fungsi['nama_alat'] }}</td>
+                <td>{{ fungsi['deskripsi'] }}</td>
+                <td>{{ fungsi['jumlah'] }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      
+<a href="#" class="btn-add-dokter">Add Alat</a>
+  </main>  
+  </div>
+  
+  <style>
+      .container {
+          display: flex;
+      }
+      .styled-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 25px 0;
+          font-size: 18px;
+          text-align: left;
+      }
+      .styled-table thead tr {
+          background-color: #009879;
+          color: #ffffff;
+          text-align: left;
+      }
+      .styled-table th, .styled-table td {
+          padding: 12px 15px;
+      }
+      .styled-table tbody tr {
+          border-bottom: 1px solid #dddddd;
+      }
+      .styled-table tbody tr:nth-of-type(even) {
+          background-color: #f3f3f3;
+      }
+      .styled-table tbody tr:last-of-type {
+          border-bottom: 2px solid #009879;
+      }
+      .btn-edit, .btn-delete, .btn-add-dokter{
+          padding: 6px 12px;
+          color: #fff;
+          text-decoration: none;
+          border-radius: 4px;
+          margin-right: 5px;
+      }
+      .btn-edit {
+          background-color: #4CAF50;
+      }
+      .btn-delete {
+          background-color: #f44336;
+      }
+      .btn-add-dokter{
+          background-color: blue;
+      }
+      .btn-edit:hover, .btn-delete:hover {
+          opacity: 0.8;
+      }
+  </style>
 {% endblock %}
 
 {% block scripts %}

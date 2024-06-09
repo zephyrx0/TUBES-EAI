@@ -59,6 +59,10 @@ def logout():
         return "Could not connect to logout service", 500
 
 
+#layanan dokter
+def get_dokter():
+    response = requests.get('http://127.0.0.1:5002/dokter')
+    return response.json()
 
 @app.route('/dokter', methods=['GET'])
 def dokter_page():
@@ -231,16 +235,189 @@ def delete_riwayat(riwayat_id):
         logger.error(f"An error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/pasien')
+def pasien_page():
+    try:
+        response = requests.get('http://127.0.0.1:5001/pasien')
+        pasien = response.json()
+        return render_template('pasien.html', pasien=pasien, active_page='pasien_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to pasien service", 500
+
+@app.route('/tambah_pasien', methods=['POST'])
+def tambah_pasien():
+    try:
+        response = requests.post('http://127.0.0.1:5001/tambah_pasien', json=request.json)
+        pasien = response.json()
+        return render_template('pasien.html', pasien=pasien, active_page='pasien_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to pasien service", 500
+    
+@app.route('/editpasien/<int:pasien_id>', methods=['PUT'])
+def edit_pasien(pasien_id):
+    try:
+        data = request.json
+        response = requests.put(f'http://127.0.0.1:5001/editpasien/{pasien_id}', json=data)
+        pasien = response.json()
+        return render_template('pasien.html', pasien=pasien, active_page='pasien_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to pasien service", 500
+
+@app.route('/detailpasien/<int:pasien_id>', methods=['GET'])
+def detailpasien_middleware(pasien_id):
+    try:
+        response = requests.get(f'http://127.0.0.1:5001/detailpasien/{pasien_id}')
+        pasien = response.json()
+        return jsonify(pasien)
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to pasien service", 500
+
+
+@app.route('/deletepasien/<int:pasien_id>', methods=['DELETE'])
+def delete_pasien(pasien_id):
+    try:
+        response = requests.delete(f'http://127.0.0.1:5001/deletepasien/{pasien_id}')
+        if response.status_code == 200:
+            return jsonify({'message': 'Data pasien berhasil dihapus'})
+        else:
+            return jsonify({'error': 'Gagal menghapus data'}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
 # layanan janji
-def get_janji():
-    response = requests.get('http://127.0.0.1:5003/janji')
-    return response.json()
+@app.route('/janji', methods=['GET'])
+def janji_page():
+    try:
+        pasien = get_pasien()
+        dokter = get_dokter()
+        response = requests.get('http://127.0.0.1:5003/janji')
+        janji = response.json()
+        return render_template('janji.html', janji=janji,  pasien=pasien, dokter=dokter, active_page='janji_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to janji service", 500
+
+@app.route('/tambah_janji', methods=['POST'])
+def tambah_janji():
+    try:
+        response = requests.post('http://127.0.0.1:5003/janji', json=request.json)
+        janji = response.json()
+        return render_template('janji.html', janji=janji, active_page='janji_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to janji service", 500
+    
+@app.route('/editjanji/<int:janji_id>', methods=['PUT'])
+def edit_janji(janji_id):
+    try:
+        data = request.json
+        response = requests.put(f'http://127.0.0.1:5003/editjanji/{janji_id}', json=data)
+        
+        # Check if response status code is OK
+        if response.status_code == 200:
+            janji = response.json()
+            return render_template('janji.html', janji=janji, active_page='janji_page')
+        else:
+            return f"Error: {response.status_code} - {response.text}", response.status_code
+
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to janji service", 500
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/detailjanji/<int:janji_id>', methods=['GET'])
+def detailjanji_middleware(janji_id):
+    try:
+        response = requests.get(f'http://127.0.0.1:5003/detailjanji/{janji_id}')
+        response.raise_for_status()  # Raise an error for bad status codes
+        janji = response.json()
+        return jsonify(janji)
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to janji service", 500
+    except requests.exceptions.JSONDecodeError:
+        return "Invalid JSON format in response from janji service", 500
+    except Exception as e:
+        return str(e), 500
+
+
+
+@app.route('/deletejanji/<int:janji_id>', methods=['DELETE'])
+def delete_janji(janji_id):
+    try:
+        response = requests.delete(f'http://127.0.0.1:5003/deletejanji/{janji_id}')
+        if response.status_code == 200:
+            return jsonify({'message': 'Data janji berhasil dihapus'})
+        else:
+            return jsonify({'error': 'Gagal menghapus data'}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 
 # layanan rawat_inap
-def get_rawat_inap():
-    response = requests.get('http://127.0.0.1:5005/rawat_inap')
-    return response.json()
+@app.route('/rawat_inap', methods=['GET'])
+def rawat_inap_page():
+    try:
+        pasien = get_pasien()
+        dokter = get_dokter()
+        response = requests.get('http://127.0.0.1:5005/rawat_inap')
+        rawat_inap = response.json()
+        return render_template('rawat_inap.html', rawat_inap=rawat_inap,  pasien=pasien, dokter=dokter, active_page='rawat_inap_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat_inap service", 500
+
+@app.route('/tambah_rawat_inap', methods=['POST'])
+def tambah_rawat_inap():
+    try:
+        response = requests.post('http://127.0.0.1:5005/rawat_inap', json=request.json)
+        rawat_inap = response.json()
+        return render_template('rawat_inap.html', rawat_inap=rawat_inap, active_page='rawat_inap_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat_inap service", 500
+    
+@app.route('/editrawat_inap/<int:rawat_inap_id>', methods=['PUT'])
+def edit_rawat_inap(rawat_inap_id):
+    try:
+        data = request.json
+        response = requests.put(f'http://127.0.0.1:5005/editrawat_inap/{rawat_inap_id}', json=data)
+        
+        # Check if response status code is OK
+        if response.status_code == 200:
+            rawat_inap = response.json()
+            return render_template('rawat_inap.html', rawat_inap=rawat_inap, active_page='rawat_inap_page')
+        else:
+            return f"Error: {response.status_code} - {response.text}", response.status_code
+
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat_inap service", 500
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/detailrawat_inap/<int:rawat_inap_id>', methods=['GET'])
+def detailrawat_inap_middleware(rawat_inap_id):
+    try:
+        response = requests.get(f'http://127.0.0.1:5005/detailrawat_inap/{rawat_inap_id}')
+        response.raise_for_status()  # Raise an error for bad status codes
+        rawat_inap = response.json()
+        return jsonify(rawat_inap)
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat_inap service", 500
+    except requests.exceptions.JSONDecodeError:
+        return "Invalid JSON format in response from rawat_inap service", 500
+    except Exception as e:
+        return str(e), 500
+
+
+
+@app.route('/deleterawat_inap/<int:rawat_inap_id>', methods=['DELETE'])
+def delete_rawat_inap(rawat_inap_id):
+    try:
+        response = requests.delete(f'http://127.0.0.1:5005/deleterawat_inap/{rawat_inap_id}')
+        if response.status_code == 200:
+            return jsonify({'message': 'Data rawat_inap berhasil dihapus'})
+        else:
+            return jsonify({'error': 'Gagal menghapus data'}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 # layanan klinik
 def get_klinik():
@@ -248,36 +425,66 @@ def get_klinik():
     return response.json()
 
 # layanan obat
-def get_obat():
-    response = requests.get('http://127.0.0.1:5007/obat')
-    return response.json()
+@app.route('/obat')
+def obat_page():
+    try:
+        response = requests.get('http://127.0.0.1:5007/obat')
+        obat = response.json()
+        return render_template('obat.html', obat=obat, active_page='obat_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to obat service", 500
+
+@app.route('/tambahobat', methods=['POST'])
+def tambah_obat():
+    try:
+        response = requests.post('http://127.0.0.1:5007/tambahobat', json=request.json)
+        obat = response.json()
+        return render_template('obat.html', obat=obat, active_page='obat_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to obat service", 500
+    
+@app.route('/editobat/<int:obat_id>', methods=['PUT'])
+def edit_obat(obat_id):
+    try:
+        data = request.json
+        response = requests.put(f'http://127.0.0.1:5007/editobat/{obat_id}', json=data)
+        obat = response.json()
+        return render_template('obat.html', obat=obat, active_page='obat_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to obat service", 500
+
+@app.route('/detailobat/<int:obat_id>', methods=['GET'])
+def detailobat_middleware(obat_id):
+    try:
+        response = requests.get(f'http://127.0.0.1:5007/detailobat/{obat_id}')
+        obat = response.json()
+        return jsonify(obat)
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to obat service", 500
+
+
+@app.route('/deleteobat/<int:obat_id>', methods=['DELETE'])
+def delete_obat(obat_id):
+    try:
+        response = requests.delete(f'http://127.0.0.1:5007/deleteobat/{obat_id}')
+        if response.status_code == 200:
+            return jsonify({'message': 'Data obat berhasil dihapus'})
+        else:
+            return jsonify({'error': 'Gagal menghapus data'}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 # layanan alat medis
 def get_alat_medis():
     response = requests.get('http://127.0.0.1:5008/alat_medis')
     return response.json()
 
-@app.route('/pasien')
-def pasien_page():
-    return render_template('pasien.html', active_page='pasien_page')
 
 
-@app.route('/janji')
-def janji_page():
-    return render_template('janji.html', active_page='janji_page')
-
-
-@app.route('/rawat_inap')
-def rawat_inap_page():
-    return render_template('rawat_inap.html', active_page='rawat_inap_page')
 
 @app.route('/klinik')
 def klinik_page():
     return render_template('klinik.html', active_page='klinik_page')
-
-@app.route('/obat')
-def obat_page():
-    return render_template('obat.html', active_page='obat_page')
 
 @app.route('/alat_medis')
 def alat_medis_page():
