@@ -1,7 +1,62 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, render_template, flash
 import requests
 
+
 app = Flask(__name__)
+app.secret_key = 'cobain'  # Pastikan untuk mengatur kunci rahasia sesi
+
+# Fungsi bantuan untuk membuat respons JSON
+def create_response(data, status_code, message):
+    response = {
+        'data': data,
+        'status': status_code,
+        'message': message
+    }
+    return jsonify(response)
+
+# Login route
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        data = {
+            'email': email,
+            'password': password
+        }
+        try:
+            response = requests.post('http://127.0.0.1:4999/', data=data)
+            if response.status_code == 200:
+                session['email'] = email
+                return redirect(url_for('home'))  # Mengarahkan ke halaman home setelah login
+            else:
+                flash("Invalid email or password")  # Menampilkan pesan flash jika login gagal
+                return render_template('login.html')
+        except requests.exceptions.ConnectionError:
+            return "Could not connect to login service", 500
+    else:
+        return render_template('login.html')
+
+# Dashboard route
+@app.route('/home')
+def home():
+    if 'email' not in session:
+        return redirect(url_for('login'))  # Mengarahkan pengguna yang belum masuk ke halaman login
+    return render_template('home.html')
+
+# Logout route
+@app.route('/logout')
+def logout():
+    try:
+        response = requests.post('http://127.0.0.1:4999/logout', data={})
+        if response.status_code == 200:
+            session.pop('email', None)
+            return redirect(url_for('login'))  # Mengarahkan pengguna ke halaman login setelah logout
+        else:
+            return "Logout failed", 400
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to logout service", 500
+
 
 
 @app.route('/dokter', methods=['GET'])
@@ -52,9 +107,6 @@ def delete_dokter(dokter_id):
             return jsonify({'error': 'Gagal menghapus data'}), 500
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
-
-
-
 
 # layanan pasien
 @app.route('/pasien')
@@ -180,10 +232,6 @@ def delete_obat(obat_id):
 def get_alat_medis():
     response = requests.get('http://127.0.0.1:5008/alat_medis')
     return response.json()
-
-@app.route('/')
-def home():
-    return render_template('home.html', active_page='home')
 
 
 
