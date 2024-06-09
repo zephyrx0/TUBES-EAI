@@ -1,6 +1,7 @@
 from flask import Flask , request, render_template, jsonify, redirect, url_for
 import requests
 
+
 app = Flask(__name__)
 
 
@@ -146,8 +147,13 @@ def home():
 
 @app.route('/dokter')
 def dokter_page():
-    dokter = get_dokter()
-    return render_template('dokter.html', dokter=dokter)
+    dokters = get_dokter()
+    return render_template('dokter.html', dokters=dokters)
+
+@app.route('/delete_dokter/<int:dokter_id>')
+def delete_dokter(dokter_id):
+    response = requests.delete(f'http://localhost:5002/delete_dokter/{dokter_id}')
+    return redirect(url_for('dokter_page'))
 
 @app.route('/janji')
 def janji_page():
@@ -182,9 +188,50 @@ def rawat_inap_page():
         r['nama_dokter'] = dokter.get(r['dokter_id'], 'Unknown')
     return render_template('rawat_inap.html', rawat_inap=rawat_inap)
 
+def get_klinik():
+    response = requests.get('http://127.0.0.1:5006/klinik')
+    return response.json()
+
+def get_klinik_id(klinik_id):
+    response = requests.get('http://127.0.0.1:5006/api/klinik/{klinik_id}')
+    return response.json()
+
 @app.route('/klinik')
 def klinik_page():
-    return render_template('klinik.html', active_page='klinik_page')
+    klinik = get_klinik()
+    return render_template('klinik.html', klinik=klinik)
+
+@app.route('/addklinik')
+def tambah_klinik():
+    return render_template('tambah_klinik.html')
+
+@app.route('/add_klinik', methods=['POST'])
+def add_klinik():
+    data = request.form
+    response = requests.post('http://127.0.0.1:5006/klinik', json=data)
+    return redirect(url_for('klinik_page'))
+
+#form edit
+@app.route('/editklinik/<int:klinik_id>')
+def edit_klinik(klinik_id):
+    klinikk = get_klinik_id(klinik_id)
+    return render_template('edit_klinik.html', klinik_id=klinik_id, klinikk=klinikk)
+
+@app.route('/update_klinik/<int:klinik_id>', methods=['GET', 'POST'])
+def update_klinik(klinik_id):
+    if request.method == 'GET':
+        response = requests.get(f'http://127.0.0.1:5006/klinik/{klinik_id}')
+        klinik = response.json()
+        return render_template('edit_klinik.html', klinik=klinik)
+    elif request.method == 'POST':
+        data = request.form
+        response = requests.put(f'http://127.0.0.1:5006/klinik/{klinik_id}', json=data)
+        return redirect(url_for('klinik_page'))
+
+@app.route('/delete_klinik/<int:klinik_id>')
+def delete_klinik(klinik_id):
+    response = requests.delete(f'http://localhost:5006/delete_klinik/{klinik_id}')
+    return redirect(url_for('klinik_page'))
 
 @app.route('/obat')
 def obat_page():
@@ -192,7 +239,10 @@ def obat_page():
 
 @app.route('/alat_medis')
 def alat_medis_page():
-    return render_template('alat_medis.html', active_page='alat_medis_page')
+    medis = get_alat_medis()
+    return render_template('alat_medis.html',medis=medis)
+    
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

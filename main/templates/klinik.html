@@ -6,12 +6,87 @@
     {% set active_page = 'klinik' %}
     {% include 'sidebar.html' %}
     <main class="content">
-        <!-- Isi konten utama di sini -->
-        <h1>Selamat datang di halaman klinik!</h1>
-        <p>Ini adalah konten spesifik untuk halaman klinik.</p>
-    </main>
-    {% endblock %}
+    <h1>Selamat datang di halaman klinik!</h1>
+    <p>Ini adalah konten spesifik untuk halaman klinik.</p>
+    <h2>Daftar Klinik</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Klinik</th>
+                <th>Alamat klinik</th>
+                <th>Nomer Telepon</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for klinik in klinik %}
+            <tr>
+                <td>{{ klinik['klinik_id'] }}</td>
+                <td>{{ klinik['nama_klinik'] }}</td>
+                <td>{{ klinik['alamat_klinik'] }}</td>
+                <td>{{ klinik['no_telepon'] }}</td>
+                <td>
+                    <a href="{{ url_for('update_klinik', klinik_id=klinik['klinik_id']) }}" class="btn-edit">Edit</a>
+                    <a href="#" class="btn-delete">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+    <a href="{{ url_for('tambah_klinik') }}" class="btn-add-dokter">Add Klinik</a>
+  </main>
 
-    {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    {% endblock %}
+  </main>  
+  </div>
+  
+  <style>
+      .container {
+          display: flex;
+      }
+      .styled-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 25px 0;
+          font-size: 18px;
+          text-align: left;
+      }
+      .styled-table thead tr {
+          background-color: #009879;
+          color: #ffffff;
+          text-align: left;
+      }
+      .styled-table th, .styled-table td {
+          padding: 12px 15px;
+      }
+      .styled-table tbody tr {
+          border-bottom: 1px solid #dddddd;
+      }
+      .styled-table tbody tr:nth-of-type(even) {
+          background-color: #f3f3f3;
+      }
+      .styled-table tbody tr:last-of-type {
+          border-bottom: 2px solid #009879;
+      }
+      .btn-edit, .btn-delete, .btn-add-dokter{
+          padding: 6px 12px;
+          color: #fff;
+          text-decoration: none;
+          border-radius: 4px;
+          margin-right: 5px;
+      }
+      .btn-edit {
+          background-color: #4CAF50;
+      }
+      .btn-delete {
+          background-color: #f44336;
+      }
+      .btn-add-dokter{
+          background-color: blue;
+      }
+      .btn-edit:hover, .btn-delete:hover {
+          opacity: 0.8;
+      }
+  </style>
+{% endblock %}

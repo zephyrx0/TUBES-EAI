@@ -8,62 +8,83 @@ app.use(bodyParser.json());
 const uri = 'mongodb+srv://ganelajeisa:ganelajeisa@cluster0.4ula36n.mongodb.net/klinik';
 let klinikCollection;
 
-// Connect to MongoDB
 MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
-        const db = client.db('klinik');  // Ensure this is your actual database name
+        const db = client.db('klinik');
         klinikCollection = db.collection('klinik');
         console.log('Connected to Database');
     })
     .catch(error => console.error(error));
 
-// Endpoint untuk mendapatkan data poliklinik
+// Endpoint untuk mendapatkan data klinik
 app.get('/klinik', (req, res) => {
-    // Jalankan query untuk mengambil data dari collection Poliklinik
     klinikCollection.find({}, { projection: { _id: 0 } }).toArray()
         .then(results => {
-            res.status(200).json(results); // Mengirimkan data poliklinik dalam bentuk JSON sebagai respons
+            res.status(200).json(results);
         })
         .catch(error => res.status(500).json({ error: error.message }));
 });
+
+// Endpoint untuk mendapatkan data klinik berdasarkan klinik_id
+app.get('/api/klinik/:klinik_id', async (req, res) => {
+    const klinikId = req.params.klinik_id;
+    try {
+      const klinik = await klinikCollection.findOne({ klinik_id: klinikId }, { projection: { _id: 0 } });
+      if (klinik) {
+        res.status(200).json(klinik);
+      } else {
+        res.status(404).json({ error: 'Klinik tidak ditemukan' });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Terjadi kesalahan pada server' });
+    }
+  });
+
+  // Endpoint untuk mengupdate data klinik berdasarkan klinik_id
+  app.put('/api/klinik/:klinik_id', async (req, res) => {
+    const klinikId = req.params.klinik_id;
+    const data = req.body;
+    try {
+      const result = await klinikCollection.updateOne(
+        { klinik_id: klinikId },
+        { $set: data }
+      );
+      if (result.modifiedCount > 0) {
+        res.status(200).json({ message: 'Data klinik berhasil diperbarui' });
+      } else {
+        res.status(404).json({ error: 'Klinik tidak ditemukan' });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Terjadi kesalahan pada server' });
+    }
+  });
+
+
 
 // Endpoint untuk menambah data klinik
 app.post('/klinik', (req, res) => {
     const data = req.body;
     klinikCollection.insertOne(data)
         .then(result => {
-            res.status(201).json(result.ops[0]); // Mengirimkan data klinik yang baru ditambahkan dalam bentuk JSON sebagai respons
+            res.status(201).json(result.ops[0]);
         })
         .catch(error => res.status(500).json({ error: error.message }));
 });
 
-// Endpoint untuk menghapus data klinik berdasarkan ID
-app.delete('/klinik/:id', (req, res) => {
+// Endpoint untuk mengupdate data klinik
+
+
+// Endpoint untuk menghapus data klinik
+app.delete('/delete_klinik/:id', (req, res) => {
     const id = req.params.id;
     klinikCollection.deleteOne({ _id: new ObjectId(id) })
         .then(result => {
             if (result.deletedCount > 0) {
-                res.status(200).json({ message: 'Klinik deleted' }); // Mengirimkan pesan bahwa klinik telah dihapus sebagai respons
+                res.status(200).json({ message: 'Klinik deleted' });
             } else {
-                res.status(404).json({ error: 'Klinik not found' }); // Mengirimkan pesan bahwa klinik tidak ditemukan sebagai respons jika ID tidak ditemukan
-            }
-        })
-        .catch(error => res.status(500).json({ error: error.message }));
-});
-
-// Endpoint untuk mengupdate data klinik berdasarkan ID
-app.put('/klinik/:id', (req, res) => {
-    const id = req.params.id;
-    const data = req.body;
-    klinikCollection.updateOne(
-        { _id: new ObjectId(id) },
-        { $set: data }
-    )
-        .then(result => {
-            if (result.matchedCount > 0) {
-                res.status(200).json({ message: 'Klinik updated' }); // Mengirimkan pesan bahwa klinik telah diupdate sebagai respons
-            } else {
-                res.status(404).json({ error: 'Klinik not found' }); // Mengirimkan pesan bahwa klinik tidak ditemukan sebagai respons jika ID tidak ditemukan
+                res.status(404).json({ error: 'Klinik not found' });
             }
         })
         .catch(error => res.status(500).json({ error: error.message }));
