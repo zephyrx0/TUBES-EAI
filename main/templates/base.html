@@ -1,31 +1,112 @@
-<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default Title{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-    <title>{% block title %}Home{% endblock %}</title>
 </head>
-<body>
-    {% include 'sidebar.html' %}
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+<style>
+            body {
+                overflow-x: hidden;
+                background-color: #F5E1FD;
+            }
 
-    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+            footer {
+            background-color: #6C6997;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            width: 95%;
+            margin-left: 75px;
+            bottom: 0;
+            z-index: 1000;
+            border-top-left-radius: 50px; /* Membuat ujung atas kiri melengkung */
+            border-top-right-radius: 50px; /* Membuat ujung atas kanan melengkung */
+        }
+
+        footer h3 {
+            margin: 0 0 10px; /* Jarak bawah dari h3 */
+        }
+
+        footer p {
+            margin: 5px 0; /* Jarak atas dan bawah dari paragraf */
+            color: white;
+        }
+
+        footer a {
+            color: #FF7B2A; /* Warna teks */
+            text-decoration: none; /* Menghapus dekorasi tautan */
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline; /* Membuat garis bawah saat dihover */
+            color: aquamarine;
+        }
+
+        header {
+            background-color: #6C6997;
+            color: rgb(255, 255, 255);
+            padding: 10px 0;
+            text-align: center;
+            width: 95%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: 80px;
+            margin-left: 75px;
+            border-bottom-left-radius: 50px; /* Membuat ujung bawah kiri melengkung */
+            border-bottom-right-radius: 50px; /* Membuat ujung bawah kanan melengkung */
+        }
+        header h1 {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+        hr {
+            border-top: 1px solid #ffffff;
+        }
+
+        /* .hiasan1 {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+
+    .hiasan2 {
+        position: absolute;
+        bottom: -40px;
+        left: 0 px;
+    } */
+
+</style>
+<body>
+    <header>
+        <!-- <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1"> -->
+        <h1>Rumah Sakit Bahagia</h1>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <h3>Hubungi Kami:</h3>
+        <p>Jika Anda memiliki pertanyaan atau membutuhkan bantuan, jangan ragu untuk menghubungi tim dukungan kami di <a href="mailto:RumahSakitBahagia@gmail.com">RumahSakitBahagia@gmail.com</a> atau melalui nomor telepon <a href="tel:(123)456-7890">(123) 456-7890</a>.</p>
+    </footer>
+    <!-- <img src="static/images/hiasan2.png" alt="hiasan2" class="hiasan2"> -->
+
+    {% block scripts %}
+        <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% endblock %}
 </body>
 </html>
