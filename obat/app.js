@@ -69,7 +69,7 @@ app.put('/obat/:id', (req, res) => {
         .catch(error => res.status(500).json({ error: error.message }));
 });
 
-const PORT = process.env.PORT || 5006;
+const PORT = process.env.PORT || 5007;
 app.listen(PORT, () => {
     console.log(`Server berjalan di port ${PORT}`);
 });

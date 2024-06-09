@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% include 'sidebar.html' %}
+<main>
+    <style>
+        body {
+            background-color: #F5E1FD;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        main {
+            padding: 20px;
+            margin-left: 250px; /* Menyesuaikan lebar sidebar */
+            transition: margin-left 0.5s;
+            margin-bottom: -92px;
+        }
+        .content-active {
+            margin-left: 0;
+        }
+
+        .intro {
+            margin-bottom: 20px;
+            width: 500px; /* Menyesuaikan lebar konten */
+            text-align: justify;
+            margin-top: 200px;
+            margin-left: -10px;
+        }
+
+        .intro h2 {
+            font-size: 40px; /* Ukuran font h2 */
+            margin-bottom: 10px; /* Jarak bawah dari h2 */
+            position: center;
+            font-weight: 500;
+        }
+
+        .intro p {
+            font-size: 16px; /* Ukuran font paragraf */
+            line-height: 1.5; /* Spasi baris */
+            margin-bottom: 20px; /* Jarak bawah dari paragraf */
+            color: rgb(0, 0, 0);
+        }
+
+        .gif-container {
+            width: 100%; /* Lebar kontainer sesuai dengan lebar layar */
+            max-width: 500px; /* Maksimum lebar gambar */
+            margin: 0 auto; /* Posisi gambar di tengah halaman */
+            text-align: center; /* Teks di tengah halaman */
+            margin-right: 500px;
+            margin-top : -350px ;
+        }
+
+        .gif-container img {
+            width: 100%; /* Gambar mengisi lebar kontainer */
+            height: auto; /* Tinggi gambar disesuaikan secara proporsional */
+        }
+    </style>
+    <!-- Pesan Sambutan dan Informasi Keamanan -->
+    <div class="intro">
+        <h2>Selamat Datang di Portal Admin Rumah Sakit</h2>
+        <p style="font-style: italic; color: rgb(106, 106, 106);">Keamanan dan Privasi adalah Prioritas Utama Kami</p>
+        <p>Di sini, kami berkomitmen untuk melindungi privasi dan kerahasiaan informasi pribadi pasien. Data yang Anda akses melalui portal ini bersifat rahasia dan digunakan hanya untuk keperluan medis serta operasional rumah sakit. Kami memastikan bahwa setiap langkah yang kami ambil mematuhi standar keamanan data yang ketat.</p>
+    </div>
+
+    <div class="gif-container">
+        <img src="{{ url_for('static', filename='images/home.gif') }}" alt="Animasi Rumah Sakit">
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

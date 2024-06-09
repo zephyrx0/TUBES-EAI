@@ -1,53 +1,319 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dokter{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-{% block title %}Klinik{% endblock %}
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
+        body {
+            background-color: #F5E1FD;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 170px;
+            width: 1400px;
+            height: 350px;
+            position: relative;
+            margin-top: 100px;
+            z-index: 2;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #333;
+        }
+        .btn-tambah {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ECA869;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+        .btn-tambah:hover {
+            background-color: #FF7B2A;
+        }
+        table {
+            width: 95%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #6C6997;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .hiasan1 {
+            position: absolute;
+            top: -101px;
+            right: 0px;
+            z-index: 1;
+            width: 400px;
+        }
+        .hiasan2 {
+            position: absolute;
+            bottom: -92px;
+            left: 80px;
+            z-index: 1;
+            width: 450px;
+        }
+    </style>
+</head>
+<body>
 
 {% block content %}
-<div class="container">
-    <aside class="sidebar">
-        <!-- Isi sidebar di sini -->
-        <div class="toggle">
-            <a href="#" class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
-                  <span></span>
-                </a>
-          </div>
-          <div class="side-inner">
-      
-            <div class="logo-wrap">
-              <div class="logo">
-                <span>C</span>
-              </div>
-              <span class="logo-text">Rumah Sakit Bahagia</span>
-            </div>
-              
-            <div class="search-form">
-              <form action="#">
-                <span class="wrap-icon">
-                  <span class="icon-search2"></span>
-                </span>
-                <input type="text" class="form-control" placeholder="Search...">
-              </form>
-            </div>
-            <div class="nav-menu">
-              <ul>
-                <li class="active"><a href="{{ url_for('home') }}" class="d-flex align-items-center"><span class="wrap-icon icon-home2 mr-3"></span><span class="menu-text">Home</span></a></li>
-                <li><a href="{{ url_for('pasien_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-videocam mr-3"></span><span class="menu-text">Pasien</span></a></li>
-                <li><a href="{{ url_for('dokter_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-book mr-3"></span><span class="menu-text">Dokter</span></a></li>
-                <li><a href="{{ url_for('janji_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-shopping-cart mr-3"></span><span class="menu-text">Janji</span></a></li>
-                <li><a href="{{ url_for('riwayat_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-pie-chart mr-3"></span><span class="menu-text">Riwayat</span></a></li>
-                <li><a href="{{ url_for('rawat_inap_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Rawat Inap</span></a></li>
-                <li><a href="{{ url_for('klinik_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Klinik</span></a></li>
-                <li><a href="{{ url_for('obat_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Obat</span></a></li>
-                <li><a href="{{ url_for('alat_medis_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Alat medis</span></a></li>
-      
-              </ul>
-            </div>
-          </div>
-    </aside>
+    {% set active_page = 'dokter' %}
+    {% include 'sidebar.html' %}
+    <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1">
     <main class="content">
-        <!-- Isi konten utama di sini -->
-        <h1>Selamat datang di halaman dokter!</h1>
-        <p>Ini adalah konten spesifik untuk halaman dokter.</p>
+        <div class="header-content">
+            <h1>Data Dokter</h1>
+            <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>no</th>
+                    <th>nama</th>
+                    <th>poli</th>
+                    <th>aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Isi tabel dokter -->
+                {% for dokter in dokter %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ dokter.nama }}</td>
+                    <td>{{ dokter.poli }}</td>
+                    <td>
+                        <!-- Tombol Edit dengan ikon -->
+                        <button type="button" class="btn btn-primary btn-sm" onclick="edit_dokter('{{ dokter.dokter_id }}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ dokter.dokter_id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </main>
+    <img src="static/images/hiasan2.png" alt="hiasan2" class="hiasan2">
+
+    <!-- Modal -->
+    <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Dokter</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="tambahForm">
+                        <div class="form-group">
+                            <label for="nama">Nama</label>
+                            <input type="text" class="form-control" id="nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="poli">Poli</label>
+                            <input type="text" class="form-control" id="poli">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal{{ dokter.dokter_id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ dokter.dokter_id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Data Dokter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="edit_nama">Nama</label>
+                        <input type="text" class="form-control" id="edit_nama">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_poli">Poli</label>
+                        <input type="text" class="form-control" id="edit_poli">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveChangesEdit" data-dokter_id="{{ dokter.dokter_id }}">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 {% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+$(document).ready(function() {
+    console.log("Document ready!");
+    $('#saveChanges').click(function() {
+        console.log("Save changes clicked!");
+        var data = {
+            nama: $('#nama').val(),
+            poli: $('#poli').val()
+        };
+        $.ajax({
+            url: 'http://127.0.0.1:5000/tambah_dokter',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response && response.message) {
+                    alert(response.message);
+                } else {
+                    console.log("Response or message property is undefined");
+                }
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+function edit_dokter(dokter_id) {
+    $.ajax({
+        url: `http://127.0.0.1:5000/detaildokter/${dokter_id}`,
+        type: 'GET',
+        success: function(response) {
+            if (response && !response.error) {
+                $('#edit_nama').val(response.nama);
+                $('#edit_poli').val(response.poli);
+                $('#saveChangesEdit').data('dokter_id', dokter_id); // Menyimpan dokter_id ke dalam data-dokter_id
+                $('#editModal').modal('show');
+            } else {
+                console.log("Data dokter tidak ditemukan");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
+
+
+$('#saveChangesEdit').click(function() {
+    var dokter_id = $(this).data('dokter_id'); // Mengambil dokter_id dari atribut data-dokter_id
+    var data = {
+        nama: $('#edit_nama').val(),
+        poli: $('#edit_poli').val()
+    };
+    $.ajax({
+        url: `http://127.0.0.1:5000/editdokter/${dokter_id}`, // Menggunakan dokter_id dalam URL
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response && response.message) {
+                alert(response.message);
+            } else {
+                console.log("Response or message property is undefined");
+            }
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+});
+
+
+        $(document).on('click', '.btn-delete', function() {
+    var dokter_id = $(this).data('id');
+    if (confirm('Apakah Anda yakin ingin menghapus data dokter ini?')) {
+        $.ajax({
+            url: `http://127.0.0.1:5000/deletedokter/${dokter_id}`,
+            type: 'DELETE',
+            success: function(response) {
+                if (response && response.message) {
+                    alert(response.message);
+                    location.reload(); // Reload halaman setelah penghapusan berhasil
+                } else {
+                    console.log("Response or message property is undefined");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+});
+
+    </script>
+{% endblock %}
+</body>
+</html>
