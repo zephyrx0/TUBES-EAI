@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, render_template, flash
 import requests
+import logging
 
 
 app = Flask(__name__)
@@ -107,21 +108,134 @@ def delete_dokter(dokter_id):
             return jsonify({'error': 'Gagal menghapus data'}), 500
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
+    
 
-# layanan pasien
-def get_pasien():
-    response = requests.get('http://127.0.0.1:5001/pasien')
-    return response.json()
+@app.route('/pasien_riwayat', methods=['GET'])
+def get_pasien_riwayat():
+    try:
+        response = requests.get('http://127.0.0.1:5004/pasien_riwayat')
+        response.raise_for_status()  # Raise an error for bad status codes
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching pasien data: {e}")
+        return []
+
+
+# Setup logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+# Fetch riwayat data and render the page
+@app.route('/riwayat', methods=['GET'])
+def riwayat_page():
+    try:
+        # Mendapatkan data riwayat dari backend (port 5004)
+        response = requests.get('http://127.0.0.1:5004/riwayat', timeout=10)
+        response.raise_for_status()  # Raise an error for bad status codes
+
+        # Mengembalikan respons JSON dari backend ke middleware
+        data = response.json()
+        return render_template('riwayat.html', riwayat=data, active_page='riwayat_page')
+    except requests.exceptions.ConnectionError:
+        logger.error("Could not connect to riwayat service")
+        return "Could not connect to riwayat service", 500
+    except requests.exceptions.Timeout:
+        logger.error("The request to riwayat service timed out")
+        return "The request to riwayat service timed out", 500
+    except requests.exceptions.HTTPError as e:
+        # Menampilkan pesan kesalahan yang lebih spesifik
+        logger.error(f"HTTP error occurred: {e}")
+        return f"HTTP error occurred: {e}", 500
+    except requests.exceptions.RequestException as e:
+        # Menangani semua jenis kesalahan lainnya
+        logger.error(f"An error occurred: {e}")
+        return f"An error occurred: {e}", 500
+
+# Add a new riwayat entry
+@app.route('/tambah_riwayat', methods=['POST'])
+def tambah_riwayat():
+    try:
+        response = requests.post('http://127.0.0.1:5004/tambah_riwayat', json=request.json, timeout=10)
+        response.raise_for_status()  # Raise an error for bad status codes
+        return jsonify({'message': 'Data riwayat berhasil ditambahkan'})
+    except requests.exceptions.ConnectionError:
+        logger.error("Could not connect to riwayat service")
+        return "Could not connect to riwayat service", 500
+    except requests.exceptions.Timeout:
+        logger.error("The request to riwayat service timed out")
+        return "The request to riwayat service timed out", 500
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error occurred: {e}")
+        return f"HTTP error occurred: {e}", 500
+    except requests.exceptions.RequestException as e:
+        logger.error(f"An error occurred: {e}")
+        return f"An error occurred: {e}", 500
+
+# Edit an existing riwayat entry
+@app.route('/editriwayat/<int:riwayat_id>', methods=['PUT'])
+def edit_riwayat(riwayat_id):
+    try:
+        response = requests.put(f'http://127.0.0.1:5004/editriwayat/{riwayat_id}', json=request.json, timeout=10)
+        response.raise_for_status()  # Raise an error for bad status codes
+        return jsonify({'message': 'Data riwayat berhasil diperbarui'})
+    except requests.exceptions.ConnectionError:
+        logger.error("Could not connect to riwayat service")
+        return "Could not connect to riwayat service", 500
+    except requests.exceptions.Timeout:
+        logger.error("The request to riwayat service timed out")
+        return "The request to riwayat service timed out", 500
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error occurred: {e}")
+        return f"HTTP error occurred: {e}", 500
+    except requests.exceptions.RequestException as e:
+        logger.error(f"An error occurred: {e}")
+        return f"An error occurred: {e}", 500
+
+# Fetch details of a specific riwayat entry
+@app.route('/detailriwayat/<int:riwayat_id>', methods=['GET'])
+def detailriwayat_middleware(riwayat_id):
+    try:
+        response = requests.get(f'http://127.0.0.1:5004/detailriwayat/{riwayat_id}', timeout=10)
+        response.raise_for_status()  # Raise an error for bad status codes
+        return jsonify(response.json())
+    except requests.exceptions.ConnectionError:
+        logger.error("Could not connect to riwayat service")
+        return "Could not connect to riwayat service", 500
+    except requests.exceptions.Timeout:
+        logger.error("The request to riwayat service timed out")
+        return "The request to riwayat service timed out", 500
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error occurred: {e}")
+        return f"HTTP error occurred: {e}", 500
+    except requests.exceptions.RequestException as e:
+        logger.error(f"An error occurred: {e}")
+        return f"An error occurred: {e}", 500
+
+# Delete a riwayat entry
+@app.route('/deleteriwayat/<int:riwayat_id>', methods=['DELETE'])
+def delete_riwayat(riwayat_id):
+    try:
+        response = requests.delete(f'http://127.0.0.1:5004/deleteriwayat/{riwayat_id}', timeout=10)
+        response.raise_for_status()  # Raise an error for bad status codes
+        return jsonify({'message': 'Data riwayat berhasil dihapus'})
+    except requests.exceptions.ConnectionError:
+        logger.error("Could not connect to riwayat service")
+        return "Could not connect to riwayat service", 500
+    except requests.exceptions.Timeout:
+        logger.error("The request to riwayat service timed out")
+        return "The request to riwayat service timed out", 500
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error occurred: {e}")
+        return f"HTTP error occurred: {e}", 500
+    except requests.exceptions.RequestException as e:
+        logger.error(f"An error occurred: {e}")
+        return jsonify({'error': str(e)}), 500
 
 # layanan janji
 def get_janji():
     response = requests.get('http://127.0.0.1:5003/janji')
     return response.json()
 
-# layanan riwayat
-def get_riwayat():
-    response = requests.get('http://127.0.0.1:5004/riwayat')
-    return response.json()
 
 # layanan rawat_inap
 def get_rawat_inap():
@@ -152,9 +266,6 @@ def pasien_page():
 def janji_page():
     return render_template('janji.html', active_page='janji_page')
 
-@app.route('/riwayat')
-def riwayat_page():
-    return render_template('riwayat.html', active_page='riwayat_page')
 
 @app.route('/rawat_inap')
 def rawat_inap_page():

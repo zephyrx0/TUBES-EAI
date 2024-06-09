@@ -11,38 +11,49 @@ app.config['MYSQL_PORT'] = 26484
 
 mysql = MySQL(app)
 
-@app.route('/pasien', methods=['GET', 'POST'])
-def pasien():
-    if request.method == 'GET':
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM pasien")
-        kolom = [i[0] for i in cursor.description]
-        data = []
-        for row in cursor.fetchall():
-            data.append(dict(zip(kolom, row)))
-        for item in data:
-            tanggal_lahir_date = item['tanggal_lahir']
-            item['tanggal_lahir'] = tanggal_lahir_date.strftime("%Y-%m-%d")
-        cursor.close()
-        return jsonify(data)
+
+
+@app.route('/pasien', methods=['GET'])
+def get_pasien():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM pasien")
+    data = cur.fetchall()
+    cur.close()
+    return jsonify(data)
+
+
+# @app.route('/pasien', methods=['GET', 'POST'])
+# def pasien():
+#     if request.method == 'GET':
+#         cursor = mysql.connection.cursor()
+#         cursor.execute("SELECT * FROM pasien")
+#         kolom = [i[0] for i in cursor.description]
+#         data = []
+#         for row in cursor.fetchall():
+#             data.append(dict(zip(kolom, row)))
+#         for item in data:
+#             tanggal_lahir_date = item['tanggal_lahir']
+#             item['tanggal_lahir'] = tanggal_lahir_date.strftime("%Y-%m-%d")
+#         cursor.close()
+#         return jsonify(data)
     
-    elif request.method =='POST':
-        nama = request.json['nama']
-        tanggal_lahir = request.json['tanggal_lahir']
-        alamat = request.json['alamat']
-        tipe_darah = request.json['tipe_darah']
+#     elif request.method =='POST':
+#         nama = request.json['nama']
+#         tanggal_lahir = request.json['tanggal_lahir']
+#         alamat = request.json['alamat']
+#         tipe_darah = request.json['tipe_darah']
         
 
-        cursor = mysql.connection.cursor()
-        sql = "INSERT INTO pasien (nama, tanggal_lahir, alamat, tipe_darah) VALUES (%s,%s,%s,%s)"
+#         cursor = mysql.connection.cursor()
+#         sql = "INSERT INTO pasien (nama, tanggal_lahir, alamat, tipe_darah) VALUES (%s,%s,%s,%s)"
 
-        val = (nama, tanggal_lahir, alamat, tipe_darah)
-        cursor.execute(sql,val)
+#         val = (nama, tanggal_lahir, alamat, tipe_darah)
+#         cursor.execute(sql,val)
 
-        mysql.connection.commit()
+#         mysql.connection.commit()
 
-        return jsonify({'message':'data berhasil masuk'})
-        cursor.close()
+#         return jsonify({'message':'data berhasil masuk'})
+#         cursor.close()
     
 
 @app.route('/detailpasien',methods =['GET'])
