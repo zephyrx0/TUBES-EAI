@@ -1,17 +1,373 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Rawat Inap{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-{% block title %}Rawat Inap{% endblock %}
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
+        body {
+            background-color: #F5E1FD;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 170px;
+            width: 1400px;
+            height: 350px;
+            position: relative;
+            margin-top: 100px;
+            z-index: 2;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #333;
+        }
+        .btn-tambah {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ECA869;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+        .btn-tambah:hover {
+            background-color: #FF7B2A;
+        }
+        table {
+            width: 95%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #6C6997;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .hiasan1 {
+            position: absolute;
+            top: -101px;
+            right: 0px;
+            z-index: 1;
+            width: 400px;
+        }
+        .hiasan2 {
+            position: absolute;
+            bottom: -92px;
+            left: 80px;
+            z-index: 1;
+            width: 450px;
+        }
+    </style>
+</head>
+<body>
 
 {% block content %}
     {% set active_page = 'rawat_inap' %}
     {% include 'sidebar.html' %}
+    <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1">
     <main class="content">
-        <!-- Isi konten utama di sini -->
-        <h1>Selamat datang di halaman rawat inap!</h1>
-        <p>Ini adalah konten spesifik untuk halaman rawat inap.</p>
+        <div class="header-content">
+            <h1>Data Rawat Inap</h1>
+            <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Pasien ID</th>
+                    <th>Dokter ID</th>
+                    <th>Tanggal Masuk</th>
+                    <th>Tanggal Keluar</th>
+                    <th>Ruangan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rawat_inap in rawat_inap %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ rawat_inap.pasien_id }}</td>
+                    <td>{{ rawat_inap.dokter_id }}</td>
+                    <td>{{ rawat_inap.tanggal_masuk }}</td>
+                    <td>{{ rawat_inap.tanggal_keluar }}</td>
+                    <td>{{ rawat_inap.ruangan }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="edit_rawat_inap('{{ rawat_inap.rawat_inap_id }}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ rawat_inap.rawat_inap_id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </main>
-    {% endblock %}
+    <img src="static/images/hiasan2.png" alt="hiasan2" class="hiasan2">
 
-    {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Rawat Inap</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="tambahForm">
+                        <div class="form-group">
+                            <label for="pasien_id">Pasien ID</label>
+                            <select class="form-control" id="pasien_id">
+                                {% for p in pasien %}
+                                    <option value="{{ p['pasien_id'] }}">{{ p['nama'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dokter_id">Dokter ID</label>
+                            <select class="form-control" id="dokter_id">
+                                {% for d in dokter %}
+                                    <option value="{{ d['dokter_id'] }}">{{ d['nama'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal_masuk">Tanggal Masuk</label>
+                            <input type="date" class="form-control" id="tanggal_masuk">
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal_keluar">Tanggal Keluar</label>
+                            <input type="date" class="form-control" id="tanggal_keluar">
+                        </div>
+                        <div class="form-group">
+                            <label for="ruangan">Ruangan</label>
+                            <input type="text" class="form-control" id="ruangan">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Rawat Inap</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label for="edit_pasien_id">Pasien ID</label>
+                            <select class="form-control" id="edit_pasien_id">
+                                {% for p in pasien %}
+                                    <option value="{{ p['pasien_id'] }}">{{ p['nama'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_dokter_id">Dokter ID</label>
+                                <select class="form-control" id="edit_dokter_id">
+                                    {% for d in dokter %}
+                                        <option value="{{ d['dokter_id'] }}">{{ d['nama'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_tanggal_masuk">Tanggal Masuk</label>
+                                <input type="date" class="form-control" id="edit_tanggal_masuk">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_tanggal_keluar">Tanggal Keluar</label>
+                                <input type="date" class="form-control" id="edit_tanggal_keluar">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_ruangan">Ruangan</label>
+                                <input type="text" class="form-control" id="edit_ruangan">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="saveChangesEdit">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endblock %}
+    
+    {% block scripts %}
+        <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#saveChanges').click(function() {
+                    var data = {
+                        pasien_id: $('#pasien_id').val(),
+                        dokter_id: $('#dokter_id').val(),
+                        tanggal_masuk: $('#tanggal_masuk').val(),
+                        tanggal_keluar: $('#tanggal_keluar').val(),
+                        ruangan: $('#ruangan').val()
+                    };
+                    console.log("Data to send:", data);
+                    $.ajax({
+                        url: 'http://127.0.0.1:5000/tambah_rawat_inap',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function(response) {
+                            console.log("Response from server:", response);
+                            if (response && response.message) {
+                                alert(response.message);
+                            } else {
+                                console.log("Response or message property is undefined");
+                            }
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                            console.log("Status:", status);
+                            console.log("XHR:", xhr);
+                        }
+                    });
+                });
+    
+                $('#saveChangesEdit').click(function() {
+                    var rawat_inap_id = $(this).data('rawat_inap_id');
+                    var data = {
+                        pasien_id: $('#edit_pasien_id').val(),
+                        dokter_id: $('#edit_dokter_id').val(),
+                        tanggal_masuk: $('#edit_tanggal_masuk').val(),
+                        tanggal_keluar: $('#edit_tanggal_keluar').val(),
+                        ruangan: $('#edit_ruangan').val()
+                    };
+                    $.ajax({
+                        url: `http://127.0.0.1:5000/edit_rawat_inap/${rawat_inap_id}`,
+                        type: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function(response) {
+                            if (response && response.message) {
+                                alert(response.message);
+                            } else {
+                                console.log("Response or message property is undefined");
+                            }
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                        }
+                    });
+                });
+    
+                function edit_rawat_inap(rawat_inap_id) {
+                    console.log("Edit button clicked for rawat_inap_id:", rawat_inap_id);
+                    $.ajax({
+                        url: `http://127.0.0.1:5000/detail_rawat_inap/${rawat_inap_id}`,
+                        type: 'GET',
+                        success: function(response) {
+                            console.log("Response from server:", response);
+                            if (response && !response.error) {
+                                $('#edit_pasien_id').val(response.pasien_id);
+                                $('#edit_dokter_id').val(response.dokter_id);
+                                $('#edit_tanggal_masuk').val(response.tanggal_masuk);
+                                $('#edit_tanggal_keluar').val(response.tanggal_keluar);
+                                $('#edit_ruangan').val(response.ruangan);
+                                $('#saveChangesEdit').data('rawat_inap_id', rawat_inap_id);
+                                $('#editModal').modal('show');
+                            } else {
+                                console.log("Data rawat inap tidak ditemukan");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                        }
+                    });
+                }
+    
+                $(document).on('click', '.btn-delete', function() {
+                    var rawat_inap_id = $(this).data('id');
+                    if (confirm('Apakah Anda yakin ingin menghapus data rawat inap ini?')) {
+                        $.ajax({
+                            url: `http://127.0.0.1:5000/delete_rawat_inap/${rawat_inap_id}`,
+                            type: 'DELETE',
+                            success: function(response) {
+                                if (response && response.message) {
+                                    alert(response.message);
+                                    location.reload();
+                                } else {
+                                    console.log("Response or message property is undefined");
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error:", error);
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    {% endblock %}
+    </body>
+    </html>
+    
+                               

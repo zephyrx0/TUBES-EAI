@@ -240,9 +240,67 @@ def get_riwayat():
     return response.json()
 
 # layanan rawat_inap
-def get_rawat_inap():
-    response = requests.get('http://127.0.0.1:5005/rawat_inap')
-    return response.json()
+@app.route('/rawat_inap', methods=['GET'])
+def rawat_inap_page():
+    try:
+        pasien = get_pasien()
+        dokter = get_dokter()
+        response = requests.get('http://127.0.0.1:5005/rawat_inap')
+        rawat_inap = response.json()
+        return render_template('rawat_inap.html', rawat_inap=rawat_inap, pasien=pasien, dokter=dokter, active_page='rawat_inap_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat inap service", 500
+
+@app.route('/tambah_rawat_inap', methods=['POST'])
+def tambah_rawat_inap():
+    try:
+        response = requests.post('http://127.0.0.1:5005/rawat_inap', json=request.json)
+        rawat_inap = response.json()
+        return render_template('rawat_inap.html', rawat_inap=rawat_inap, active_page='rawat_inap_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat inap service", 500
+
+@app.route('/edit_rawat_inap/<int:rawat_inap_id>', methods=['PUT'])
+def edit_rawat_inap(rawat_inap_id):
+    try:
+        data = request.json
+        response = requests.put(f'http://127.0.0.1:5005/edit_rawat_inap/{rawat_inap_id}', json=data)
+        
+        if response.status_code == 200:
+            rawat_inap = response.json()
+            return render_template('rawat_inap.html', rawat_inap=rawat_inap, active_page='rawat_inap_page')
+        else:
+            return f"Error: {response.status_code} - {response.text}", response.status_code
+
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat inap service", 500
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/detail_rawat_inap/<int:rawat_inap_id>', methods=['GET'])
+def detail_rawat_inap_middleware(rawat_inap_id):
+    try:
+        response = requests.get(f'http://127.0.0.1:5005/detail_rawat_inap/{rawat_inap_id}')
+        response.raise_for_status()
+        rawat_inap = response.json()
+        return jsonify(rawat_inap)
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to rawat inap service", 500
+    except requests.exceptions.JSONDecodeError:
+        return "Invalid JSON format in response from rawat inap service", 500
+    except Exception as e:
+        return str(e), 500
+
+@app.route('/delete_rawat_inap/<int:rawat_inap_id>', methods=['DELETE'])
+def delete_rawat_inap(rawat_inap_id):
+    try:
+        response = requests.delete(f'http://127.0.0.1:5005/delete_rawat_inap/{rawat_inap_id}')
+        if response.status_code == 200:
+            return jsonify({'message': 'Data rawat inap berhasil dihapus'})
+        else:
+            return jsonify({'error': 'Gagal menghapus data'}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 # layanan klinik
 def get_klinik():
@@ -305,17 +363,10 @@ def get_alat_medis():
     return response.json()
 
 
-
-
-
-
 @app.route('/riwayat')
 def riwayat_page():
     return render_template('riwayat.html', active_page='riwayat_page')
 
-@app.route('/rawat_inap')
-def rawat_inap_page():
-    return render_template('rawat_inap.html', active_page='rawat_inap_page')
 
 @app.route('/klinik')
 def klinik_page():
