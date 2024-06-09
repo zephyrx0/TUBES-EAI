@@ -1,17 +1,345 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pasien{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-{% block title %}Obat{% endblock %}
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
+        body {
+            background-color: #F5E1FD;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 170px;
+            width: 1400px;
+            height: 350px;
+            position: relative;
+            margin-top: 100px;
+            z-index: 2;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #333;
+        }
+        .btn-tambah {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ECA869;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+        .btn-tambah:hover {
+            background-color: #FF7B2A;
+        }
+        table {
+            width: 95%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #6C6997;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .hiasan1 {
+            position: absolute;
+            top: -101px;
+            right: 0px;
+            z-index: 1;
+            width: 400px;
+        }
+        .hiasan2 {
+            position: absolute;
+            bottom: -92px;
+            left: 80px;
+            z-index: 1;
+            width: 450px;
+        }
+    </style>
+</head>
+<body>
 
 {% block content %}
-    {% set active_page = 'obat' %}
+    {% set active_page = 'pasien' %}
     {% include 'sidebar.html' %}
+    <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1">
     <main class="content">
-        <!-- Isi konten utama di sini -->
-        <h1>Selamat datang di halaman obat!</h1>
-        <p>Ini adalah konten spesifik untuk halaman obat.</p>
-    </main>
-    {% endblock %}
+        <div class="header-content">
+            <h1>Data Pasien</h1>
+            <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pasien</th>
+                    <th>Tanggal Lahir</th>
+                    <th>Alamat</th>
+                    <th>Tipe Darah</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Isi tabel pasien -->
+                {% for pasien in pasien %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ pasien.nama }}</td>
+                    <td>{{ pasien.tanggal_lahir }}</td>
+                    <td>{{ pasien.alamat }}</td>
+                    <td>{{ pasien.tipe_darah }}</td>
+                    <td>
+                        <!-- Tombol Edit dengan ikon -->
+                        <button type="button" class="btn btn-primary btn-sm" onclick="edit_pasien('{{ pasien.pasien_id }}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ pasien.pasien_id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        
 
-    {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    {% endblock %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <img src="static/images/hiasan2.png" alt="hiasan2" class="hiasan2">
+
+    <!-- Modal -->
+    <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Pasien</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="tambahForm">
+                        <div class="form-group">
+                            <label for="nama">Nama Pasien</label>
+                            <input type="text" class="form-control" id="nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal_lahir">Tanggal Lahir</label>
+                            <input type="date" class="form-control" id="tanggal_lahir">
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
+                            <input type="text" class="form-control" id="alamat">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipe_darah">Tipe Darah</label>
+                            <input type="text" class="form-control" id="tipe_darah">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal{{ pasien.pasien_id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ pasien.pasien_id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Data Pasien</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="edit_nama">Nama</label>
+                        <input type="text" class="form-control" id="edit_nama">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_tanggal_lahir">Tanggal Lahir</label>
+                        <input type="date" class="form-control" id="edit_tanggal_lahir">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_alamat">Alamat</label>
+                        <input type="text" class="form-control" id="edit_alamat">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_tipe_darah">Tipe Darah</label>
+                        <input type="text" class="form-control" id="edit_tipe_darah">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveChangesEdit" data-pasien_id="{{ pasien.pasien_id }}">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+$(document).ready(function() {
+    console.log("Document ready!");
+    $('#saveChanges').click(function() {
+        console.log("Save changes clicked!");
+        var data = {
+            nama: $('#nama').val(),
+            tanggal_lahir: $('#tanggal_lahir').val(),
+            alamat: $('#alamat').val(),
+            tipe_darah: $('#tipe_darah').val()
+        };
+        $.ajax({
+            url: 'http://127.0.0.1:5000/tambah_pasien',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response && response.message) {
+                    alert(response.message);
+                } else {
+                    console.log("Response or message property is undefined");
+                }
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+function edit_pasien(pasien_id) {
+    $.ajax({
+        url: `http://127.0.0.1:5000/detailpasien/${pasien_id}`,
+        type: 'GET',
+        success: function(response) {
+            if (response && !response.error) {
+                $('#edit_nama').val(response.nama);
+                $('#edit_tanggal_lahir').val(response.tanggal_lahir);
+                $('#edit_alamat').val(response.alamat);
+                $('#edit_tipe_darah').val(response.tipe_darah);
+                $('#saveChangesEdit').data('pasien_id', pasien_id); // Menyimpan pasien_id ke dalam data-pasien_id
+                $('#editModal').modal('show');
+            } else {
+                console.log("Data pasien tidak ditemukan");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
+
+
+$('#saveChangesEdit').click(function() {
+    var pasien_id = $(this).data('pasien_id'); // Mengambil pasien_id dari atribut data-pasien_id
+    var data = {
+        nama: $('#edit_nama').val(),
+        tanggal_lahir: $('#edit_tanggal_lahir').val(),
+        alamat: $('#edit_alamat').val(),
+        tipe_darah: $('#edit_tipe_darah').val()
+    };
+    $.ajax({
+        url: `http://127.0.0.1:5000/editpasien/${pasien_id}`, // Menggunakan pasien_id dalam URL
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response && response.message) {
+                alert(response.message);
+            } else {
+                console.log("Response or message property is undefined");
+            }
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+});
+
+
+        $(document).on('click', '.btn-delete', function() {
+    var pasien_id = $(this).data('id');
+    if (confirm('Apakah Anda yakin ingin menghapus data pasien ini?')) {
+        $.ajax({
+            url: `http://127.0.0.1:5000/deletepasien/${pasien_id}`,
+            type: 'DELETE',
+            success: function(response) {
+                if (response && response.message) {
+                    alert(response.message);
+                    location.reload(); // Reload halaman setelah penghapusan berhasil
+                } else {
+                    console.log("Response or message property is undefined");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+});
+
+    </script>
+{% endblock %}
+</body>
+</html>
