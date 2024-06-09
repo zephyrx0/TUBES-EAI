@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Klinik{% endblock %}</title>
+    <title>{% block title %}alat{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
@@ -106,40 +106,40 @@
 <body>
 
 {% block content %}
-    {% set active_page = 'klinik' %}
+    {% set active_page = 'alat' %}
     {% include 'sidebar.html' %}
     <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1">
     <main class="content">
         <div class="header-content">
-            <h1>Data Klinik</h1>
+            <h1>Data Alat Medis</h1>
             <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>id klinik</th>
-                    <th>Nama Klinik</th>
-                    <th>Alamat Klinik</th>
-                    <th>No Telepon</th>
+                    <th>id alat</th>
+                    <th>Nama alat</th>
+                    <th>Deskripsi</th>
+                    <th>Jumlah</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Isi tabel klinik -->
-                {% for klinik in klinik %}
+                <!-- Isi tabel alatmedis -->
+                {% for alat in alat %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ klinik.klinik_id }}</td>
-                    <td>{{ klinik.nama_klinik }}</td>
-                    <td>{{ klinik.alamat_klinik }}</td>
-                    <td>{{ klinik.no_telepon }}</td>
+                    <td>{{ alat.alat_id }}</td>
+                    <td>{{ alat.nama_alat }}</td>
+                    <td>{{ alat.deskripsi }}</td>
+                    <td>{{ alat.jumlah }}</td>
                     <td>
                         <!-- Tombol Edit dengan ikon -->
-                        <button type="button" class="btn btn-primary btn-sm" onclick="edit_klinik('{{ klinik.klinik_id }}')">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="edit_alat('{{ alat.alat_id }}')">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ klinik.klinik_id }}">
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ alat.alat_id }}">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -155,7 +155,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Klinik</h5>
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data alat medis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -163,20 +163,20 @@
                 <div class="modal-body">
                     <form id="tambahForm">
                         <div class="form-group">
-                            <label for="klinik_id">Id Klinik</label>
-                            <input type="text" class="form-control" id="klinik_id">
+                            <label for="alat_id">Id alat medis</label>
+                            <input type="text" class="form-control" id="alat_id">
                         </div>
                         <div class="form-group">
-                            <label for="nama_klinik">Nama Klinik</label>
-                            <input type="text" class="form-control" id="nama_klinik">
+                            <label for="nama_alat">Nama alat medis</label>
+                            <input type="text" class="form-control" id="nama_alat">
                         </div>
                         <div class="form-group">
-                            <label for="alamat_klinik">ALamat Klinik</label>
-                            <textarea class="form-control" id="alamat_klinik" rows="3"></textarea>
+                            <label for="deskripsi">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" rows="3"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="no_telepon">No Telepon</label>
-                            <input type="text" class="form-control" id="no_telepon">
+                            <label for="jumlah">Jumlah</label>
+                            <input type="text" class="form-control" id="jumlah">
                         </div>
                     </form>
                 </div>
@@ -193,7 +193,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Data Klinik</h5>
+                    <h5 class="modal-title" id="editModalLabel">Edit Data alat medis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -201,20 +201,20 @@
                 <div class="modal-body">
                     <form id="editForm">
                         <div class="form-group">
-                            <label for="edit_alamat_id">Id Klinik</label>
-                            <input type="text" class="form-control" id="edit_klinik_id" readonly>
+                            <label for="edit_alat_id">Id Alat Medis</label>
+                            <input type="text" class="form-control" id="edit_alat_id" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="edit_nama_klinik">Nama Klinik</label>
-                            <input type="text" class="form-control" id="edit_nama_klinik">
+                            <label for="edit_nama_alat">Nama Alat Medis</label>
+                            <input type="text" class="form-control" id="edit_nama_alat">
                         </div>
                         <div class="form-group">
-                            <label for="edit_alamat_klinik">Alamat Klinik</label>
-                            <textarea class="form-control" id="edit_alamat_klinik" rows="3"></textarea>
+                            <label for="edit_deskripsi">Deskripsi</label>
+                            <textarea class="form-control" id="edit_deskripsi" rows="3"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="edit_no_telepon">No Telepon</label>
-                            <input type="text" class="form-control" id="edit_no_telepon">
+                            <label for="edit_jumlah">Jumlah</label>
+                            <input type="text" class="form-control" id="edit_jumlah">
                         </div>
                     </form>
                 </div>
@@ -234,13 +234,13 @@
         $(document).ready(function() {
             $('#saveChanges').click(function() {
                 var data = {
-                    klinik_id: $('#klinik_id').val(),
-                    nama_klinik: $('#nama_klinik').val(),
-                    alamat_klinik: $('#alamat_klinik').val(),
-                    no_telepon: $('#no_telepon').val()
+                    alat_id: $('#alat_id').val(),
+                    nama_alat: $('#nama_alat').val(),
+                    deskripsi: $('#deskripsi').val(),
+                    jumlah: $('#jumlah').val()
                 };
                 $.ajax({
-                    url: 'http://127.0.0.1:5000/tambahklinik',
+                    url: 'http://127.0.0.1:5000/tambahalat',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
@@ -258,20 +258,20 @@
                 });
             });
 
-            window.edit_klinik = function(klinik_id) {
+            window.edit_alat = function(alat_id) {
                 $.ajax({
-                    url: `http://127.0.0.1:5000/detailklinik/${klinik_id}`,
+                    url: `http://127.0.0.1:5000/detailalat/${alat_id}`,
                     type: 'GET',
                     success: function(response) {
                         if (response && !response.error) {
-                            $('#edit_klinik_id').val(response.klinik_id);
-                            $('#edit_nama_klinik').val(response.nama_klinik);
-                            $('#edit_alamat_klinik').val(response.alamat_klinik);
-                            $('#edit_no_telepon').val(response.no_telepon);
-                            $('#saveChangesEdit').data('klinik_id', klinik_id); // Menyimpan klinik_id ke dalam data-klinik_id
+                            $('#edit_alat_id').val(response.alat_id);
+                            $('#edit_nama_alat').val(response.nama_alat);
+                            $('#edit_deskripsi').val(response.deskripsi);
+                            $('#edit_jumlah').val(response.jumlah);
+                            $('#saveChangesEdit').data('alat_id', alat_id); // Menyimpan alat_id ke dalam data-alat_id
                             $('#editModal').modal('show'); // Menampilkan modal
                         } else {
-                            console.log("Data klinik tidak ditemukan");
+                            console.log("Data alat medis tidak ditemukan");
                         }
                     },
                     error: function(xhr, status, error) {
@@ -281,15 +281,15 @@
             };
 
             $('#saveChangesEdit').click(function() {
-                var klinik_id = $(this).data('klinik_id');
+                var alat_id = $(this).data('alat_id');
                 var data = {
-                    klinik_id: $('#edit_klinik_id').val(),
-                    nama_klinik: $('#edit_nama_klinik').val(),
-                    alamat_klinik: $('#edit_alamat_klinik').val(),
-                    no_telepon: $('#edit_no_telepon').val(),
+                    alat_id: $('#edit_alat_id').val(),
+                    nama_alat: $('#edit_nama_alat').val(),
+                    deskripsi: $('#edit_deskripsi').val(),
+                    jumlah: $('#edit_jumlah').val(),
                 };
                 $.ajax({
-                    url: `http://127.0.0.1:5000/editklinik/${klinik_id}`,
+                    url: `http://127.0.0.1:5000/editalat/${alat_id}`,
                     type: 'PUT',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
@@ -308,10 +308,10 @@
             });
 
             $(document).on('click', '.btn-delete', function() {
-                var klinik_id = $(this).data('id');
-                if (confirm('Apakah Anda yakin ingin menghapus data klinik ini?')) {
+                var alat_id = $(this).data('id');
+                if (confirm('Apakah Anda yakin ingin menghapus data alat medis ini?')) {
                     $.ajax({
-                        url: `http://127.0.0.1:5000/deleteklinik/${klinik_id}`,
+                        url: `http://127.0.0.1:5000/deletealat/${alat_id}`,
                         type: 'DELETE',
                         success: function(response) {
                             if (response && response.message) {
