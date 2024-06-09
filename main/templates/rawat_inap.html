@@ -118,8 +118,8 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Pasien ID</th>
-                    <th>Dokter ID</th>
+                    <th>Nama Pasien</th>
+                    <th>Nama Dokter</th>
                     <th>Tanggal Masuk</th>
                     <th>Tanggal Keluar</th>
                     <th>Ruangan</th>
@@ -130,8 +130,8 @@
                 {% for rawat_inap in rawat_inap %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ rawat_inap.pasien_id }}</td>
-                    <td>{{ rawat_inap.dokter_id }}</td>
+                    <td>{{ rawat_inap.nama_pasien }}</td>
+                    <td>{{ rawat_inap.nama_dokter }}</td>
                     <td>{{ rawat_inap.tanggal_masuk }}</td>
                     <td>{{ rawat_inap.tanggal_keluar }}</td>
                     <td>{{ rawat_inap.ruangan }}</td>
@@ -163,7 +163,7 @@
                 <div class="modal-body">
                     <form id="tambahForm">
                         <div class="form-group">
-                            <label for="pasien_id">Pasien ID</label>
+                            <label for="pasien_id">Nama Pasien</label>
                             <select class="form-control" id="pasien_id">
                                 {% for p in pasien %}
                                     <option value="{{ p['pasien_id'] }}">{{ p['nama'] }}</option>
@@ -171,7 +171,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="dokter_id">Dokter ID</label>
+                            <label for="dokter_id">Nama Dokter</label>
                             <select class="form-control" id="dokter_id">
                                 {% for d in dokter %}
                                     <option value="{{ d['dokter_id'] }}">{{ d['nama'] }}</option>
@@ -201,173 +201,171 @@
     </div>
 
     <!-- Modal Edit -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Data Rawat Inap</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <div class="form-group">
-                            <label for="edit_pasien_id">Pasien ID</label>
-                            <select class="form-control" id="edit_pasien_id">
-                                {% for p in pasien %}
-                                    <option value="{{ p['pasien_id'] }}">{{ p['nama'] }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_dokter_id">Dokter ID</label>
-                                <select class="form-control" id="edit_dokter_id">
-                                    {% for d in dokter %}
-                                        <option value="{{ d['dokter_id'] }}">{{ d['nama'] }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_tanggal_masuk">Tanggal Masuk</label>
-                                <input type="date" class="form-control" id="edit_tanggal_masuk">
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_tanggal_keluar">Tanggal Keluar</label>
-                                <input type="date" class="form-control" id="edit_tanggal_keluar">
-                            </div>
-                            <div class="form-group">
-                                <label for="edit_ruangan">Ruangan</label>
-                                <input type="text" class="form-control" id="edit_ruangan">
-                            </div>
-                        </form>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Data Rawat Inap</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="edit_pasien_id">Nama Pasien</label>
+                        <select class="form-control" id="edit_pasien_id">
+                            {% for p in pasien %}
+                                <option value="{{ p['pasien_id'] }}">{{ p['nama'] }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="saveChangesEdit">Save changes</button>
+                    <div class="form-group">
+                        <label for="edit_dokter_id">Nama Dokter</label>
+                        <select class="form-control" id="edit_dokter_id">
+                            {% for d in dokter %}
+                                <option value="{{ d['dokter_id'] }}">{{ d['nama'] }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="edit_tanggal_masuk">Tanggal Masuk</label>
+                        <input type="date" class="form-control" id="edit_tanggal_masuk">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_tanggal_keluar">Tanggal Keluar</label>
+                        <input type="date" class="form-control" id="edit_tanggal_keluar">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_ruangan">Ruangan</label>
+                        <input type="text" class="form-control" id="edit_ruangan">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveChangesEdit">Save changes</button>
             </div>
         </div>
-    {% endblock %}
-    
-    {% block scripts %}
-        <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('#saveChanges').click(function() {
-                    var data = {
-                        pasien_id: $('#pasien_id').val(),
-                        dokter_id: $('#dokter_id').val(),
-                        tanggal_masuk: $('#tanggal_masuk').val(),
-                        tanggal_keluar: $('#tanggal_keluar').val(),
-                        ruangan: $('#ruangan').val()
-                    };
-                    console.log("Data to send:", data);
-                    $.ajax({
-                        url: 'http://127.0.0.1:5000/tambah_rawat_inap',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(data),
-                        success: function(response) {
-                            console.log("Response from server:", response);
-                            if (response && response.message) {
-                                alert(response.message);
-                            } else {
-                                console.log("Response or message property is undefined");
-                            }
-                            location.reload();
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Error:", error);
-                            console.log("Status:", status);
-                            console.log("XHR:", xhr);
-                        }
-                    });
-                });
-    
-                $('#saveChangesEdit').click(function() {
-                    var rawat_inap_id = $(this).data('rawat_inap_id');
-                    var data = {
-                        pasien_id: $('#edit_pasien_id').val(),
-                        dokter_id: $('#edit_dokter_id').val(),
-                        tanggal_masuk: $('#edit_tanggal_masuk').val(),
-                        tanggal_keluar: $('#edit_tanggal_keluar').val(),
-                        ruangan: $('#edit_ruangan').val()
-                    };
-                    $.ajax({
-                        url: `http://127.0.0.1:5000/edit_rawat_inap/${rawat_inap_id}`,
-                        type: 'PUT',
-                        contentType: 'application/json',
-                        data: JSON.stringify(data),
-                        success: function(response) {
-                            if (response && response.message) {
-                                alert(response.message);
-                            } else {
-                                console.log("Response or message property is undefined");
-                            }
-                            location.reload();
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Error:", error);
-                        }
-                    });
-                });
-    
-                function edit_rawat_inap(rawat_inap_id) {
-                    console.log("Edit button clicked for rawat_inap_id:", rawat_inap_id);
-                    $.ajax({
-                        url: `http://127.0.0.1:5000/detail_rawat_inap/${rawat_inap_id}`,
-                        type: 'GET',
-                        success: function(response) {
-                            console.log("Response from server:", response);
-                            if (response && !response.error) {
-                                $('#edit_pasien_id').val(response.pasien_id);
-                                $('#edit_dokter_id').val(response.dokter_id);
-                                $('#edit_tanggal_masuk').val(response.tanggal_masuk);
-                                $('#edit_tanggal_keluar').val(response.tanggal_keluar);
-                                $('#edit_ruangan').val(response.ruangan);
-                                $('#saveChangesEdit').data('rawat_inap_id', rawat_inap_id);
-                                $('#editModal').modal('show');
-                            } else {
-                                console.log("Data rawat inap tidak ditemukan");
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Error:", error);
-                        }
-                    });
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+    $('#saveChanges').click(function() {
+        var data = {
+            pasien_id: $('#pasien_id').val(),
+            dokter_id: $('#dokter_id').val(),
+            tanggal_masuk: $('#tanggal_masuk').val(),
+            tanggal_keluar: $('#tanggal_keluar').val(),
+            ruangan: $('#ruangan').val()
+        };
+        console.log("Data to send:", data); // Tambahkan ini untuk debugging
+        $.ajax({
+            url: 'http://127.0.0.1:5000/tambah_rawat_inap',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                console.log("Response from server:", response); // Tambahkan ini untuk debugging
+                if (response && response.message) {
+                    alert(response.message);
+                } else {
+                    console.log("Response or message property is undefined");
                 }
-    
-                $(document).on('click', '.btn-delete', function() {
-                    var rawat_inap_id = $(this).data('id');
-                    if (confirm('Apakah Anda yakin ingin menghapus data rawat inap ini?')) {
-                        $.ajax({
-                            url: `http://127.0.0.1:5000/delete_rawat_inap/${rawat_inap_id}`,
-                            type: 'DELETE',
-                            success: function(response) {
-                                if (response && response.message) {
-                                    alert(response.message);
-                                    location.reload();
-                                } else {
-                                    console.log("Response or message property is undefined");
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Error:", error);
-                            }
-                        });
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+                console.log("Status:", status);
+                console.log("XHR:", xhr);
+            }
+        });
+    });
+});
+
+function edit_rawat_inap(rawat_inap_id) {
+        console.log("Edit button clicked for rawat_inap_id:", rawat_inap_id); // Debugging log
+        $.ajax({
+            url: `http://127.0.0.1:5000/detailrawat_inap/${rawat_inap_id}`,
+            type: 'GET',
+            success: function(response) {
+                console.log("Response from server:", response); // Debugging log
+                if (response && !response.error) {
+                    $('#edit_pasien_id').val(response.pasien_id);
+                    $('#edit_dokter_id').val(response.dokter_id);
+                    $('#edit_tanggal_masuk').val(response.tanggal_masuk);
+                    $('#edit_tanggal_keluar').val(response.tanggal_keluar);
+                    $('#edit_ruangan').val(response.ruangan);
+                    $('#saveChangesEdit').data('rawat_inap_id', rawat_inap_id);
+                    $('#editModal').modal('show'); // Show the modal
+                } else {
+                    console.log("Data rawat_inap tidak ditemukan");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+
+        $('#saveChangesEdit').click(function() {
+            var rawat_inap_id = $(this).data('rawat_inap_id');
+            var data = {
+                pasien_id: $('#edit_pasien_id').val(),
+                dokter_id: $('#edit_dokter_id').val(),
+                tanggal_masuk: $('#edit_tanggal_masuk').val(),
+                tanggal_keluar: $('#edit_tanggal_keluar').val(),
+                ruangan: $('#edit_ruangan').val()
+            };
+            $.ajax({
+                url: `http://127.0.0.1:5000/editrawat_inap/${rawat_inap_id}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    if (response && response.message) {
+                        alert(response.message);
+                    } else {
+                        console.log("Response or message property is undefined");
+                    }
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-delete', function() {
+            var rawat_inap_id = $(this).data('id');
+            if (confirm('Apakah Anda yakin ingin menghapus data rawat_inap ini?')) {
+                $.ajax({
+                    url: `http://127.0.0.1:5000/deleterawat_inap/${rawat_inap_id}`,
+                    type: 'DELETE',
+                    success: function(response) {
+                        if (response && response.message) {
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            console.log("Response or message property is undefined");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
                     }
                 });
-            });
-        </script>
-    {% endblock %}
-    </body>
-    </html>
-    
-                               
+            }
+        });
+    </script>
+{% endblock %}
+</body>
+</html>
