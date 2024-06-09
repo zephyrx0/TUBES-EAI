@@ -1,17 +1,357 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Riwayat{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-{% block title %}Riwayat{% endblock %}
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
+        body {
+            background-color: #F5E1FD;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 170px;
+            width: 1400px;
+            height: 350px;
+            position: relative;
+            margin-top: 100px;
+            z-index: 2;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #333;
+        }
+        .btn-tambah {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ECA869;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+        .btn-tambah:hover {
+            background-color: #FF7B2A;
+        }
+        table {
+            width: 95%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #6C6997;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .hiasan1 {
+            position: absolute;
+            top: -101px;
+            right: 0px;
+            z-index: 1;
+            width: 400px;
+        }
+        .hiasan2 {
+            position: absolute;
+            bottom: -92px;
+            left: 80px;
+            z-index: 1;
+            width: 450px;
+        }
+    </style>
+</head>
+<body>
 
 {% block content %}
     {% set active_page = 'riwayat' %}
     {% include 'sidebar.html' %}
+    <img src="{{ url_for('static', filename='images/hiasan1.png') }}" alt="hiasan1" class="hiasan1">
     <main class="content">
-        <!-- Isi konten utama di sini -->
-        <h1>Selamat datang di halaman riwayat!</h1>
-        <p>Ini adalah konten spesifik untuk halaman riwayat.</p>
+        <div class="header-content">
+            <h1>Data Riwayat</h1>
+            <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Pasien</th>
+                    <th>Riwayat Penyakit</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for riwayat in riwayat %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ riwayat.tanggal }}</td>
+                    <td>{{ riwayat.nama_pasien }}</td>
+                    <td>{{ riwayat.riwayat_penyakit }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm btn-edit" data-id="{{ riwayat.riwayat_id }}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ riwayat.riwayat_id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </main>
+    <img src="{{ url_for('static', filename='images/hiasan2.png') }}" alt="hiasan2" class="hiasan2">
+
+    <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Riwayat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="tambahForm">
+                        <div class="form-group">
+                            <label for="tanggal">Tanggal</label>
+                            <input type="date" class="form-control" id="tanggal">
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_pasien">Nama Pasien</label>
+                            <select class="form-control" id="nama_pasien">
+                                <option value="" selected disabled>Pilih Nama</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="riwayat_penyakit">Riwayat Penyakit</label>
+                            <input type="text" class="form-control" id="riwayat_penyakit">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Riwayat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label for="edit_tanggal">Tanggal</label>
+                            <input type="date" class="form-control" id="edit_tanggal">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_nama_pasien">Nama Pasien</label>
+                            <select class="form-control" id="edit_nama_pasien"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_riwayat_penyakit">Riwayat Penyakit</label>
+                            <input type="text" class="form-control" id="edit_riwayat_penyakit">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesEdit" data-riwayat_id="">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% endblock %}
 
     {% block scripts %}
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    {% endblock %}
+
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+       $(document).ready(function() {
+        function populateNamaPasienDropdown() {
+            $.ajax({
+                url: 'http://127.0.0.1:5000/pasien_riwayat', // Perbarui URL sesuai dengan endpoint yang diinginkan
+                type: 'GET',
+                success: function(response) {
+                    if (response && response.data) {
+                        var options = '<option value="" selected disabled>Pilih Nama</option>';
+                        response.data.forEach(function(pasien) {
+                            options += '<option value="' + pasien.pasien_id + '">' + pasien.nama + '</option>';
+                        });
+                        $('#nama_pasien').html(options);
+                        $('#edit_nama_pasien').html(options);
+                    } else {
+                        console.log("No data available for pasien dropdown");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+
+            populateNamaPasienDropdown();
+
+            $('#saveChanges').click(function() {
+                var data = {
+                    tanggal: $('#tanggal').val(),
+                    pasien_id: $('#nama_pasien').val(),
+                    riwayat_penyakit: $('#riwayat_penyakit').val()
+                };
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/tambah_riwayat',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        if (response && response.message) {
+                            alert(response.message);
+                        } else {
+                            console.log("Response or message property is undefined");
+                        }
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+            function populateEditModal(riwayat_id) {
+                $.ajax({
+                    url: `http://127.0.0.1:5000/detailriwayat/${riwayat_id}`,
+                    type: 'GET',
+                    success: function(response) {
+                        if (response && !response.error) {
+                            $('#edit_tanggal').val(response.tanggal);
+                            $('#edit_riwayat_penyakit').val(response.riwayat_penyakit);
+                            $('#edit_nama_pasien').val(response.pasien_id);
+                            $('#saveChangesEdit').data('riwayat_id', riwayat_id);
+                        } else {
+                            console.log("Data riwayat tidak ditemukan");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            }
+
+            $('#saveChangesEdit').click(function() {
+                var riwayat_id = $(this).data('riwayat_id');
+                var data = {
+                    tanggal: $('#edit_tanggal').val(),
+                    pasien_id: $('#edit_nama_pasien').val(),
+                    riwayat_penyakit: $('#edit_riwayat_penyakit').val()
+                };
+                $.ajax({
+                    url: `http://127.0.0.1:5000/editriwayat/${riwayat_id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        if (response && response.message) {
+                            alert(response.message);
+                        } else {
+                            console.log("Response or message property is undefined");
+                        }
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+            $(document).on('click', '.btn-edit', function() {
+                var riwayat_id = $(this).data('id');
+                populateEditModal(riwayat_id);
+                $('#editModal').modal('show');
+            });
+
+            $(document).on('click', '.btn-delete', function() {
+                var riwayat_id = $(this).data('id');
+                if (confirm('Apakah Anda yakin ingin menghapus riwayat ini?')) {
+                    $.ajax({
+                        url: `http://127.0.0.1:5000/deleteriwayat/${riwayat_id}`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            if (response && response.message) {
+                                alert(response.message);
+                                location.reload();
+                            } else {
+                                console.log("Response or message property is undefined");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error:", error);
+                        }
+                    });
+                }
+            });
+
+            $('#tambahModal, #editModal').on('hidden.bs.modal', function () {
+                $(this).find('form').trigger('reset');
+            });
+        });
+    </script>
+{% endblock %}
+</body>
+</html>
