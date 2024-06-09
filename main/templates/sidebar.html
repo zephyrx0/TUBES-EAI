@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- sidebar.html -->
 <aside class="sidebar">
     
@@ -11,63 +12,198 @@
       <div class="logo-wrap">
         <div class="logo">
           <span>C</span>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Memuat Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Memuat Bootstrap Icons CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Memuat Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Your HTML content here -->
+    <aside class="sidebar">
+        <div class="toggle">
+            <a href="javascript:void(0)" class="burger js-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+>>>>>>> 13ad35a7a99b9b44fe8816033f11d6c772da7dac
         </div>
-        <span class="logo-text">Rumah Sakit Bahagia</span>
-      </div>
-        
-      <div class="search-form">
-        <form action="#">
-          <span class="wrap-icon">
-            <span class="icon-search2"></span>
-          </span>
-          <input type="text" class="form-control" placeholder="Search...">
-        </form>
-      </div>
-      <div class="nav-menu">
-        <ul>
-          <li class="active"><a href="{{ url_for('home') }}" class="d-flex align-items-center"><span class="wrap-icon icon-home2 mr-3"></span><span class="menu-text">Home</span></a></li>
-                <li><a href="{{ url_for('pasien_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-videocam mr-3"></span><span class="menu-text">Pasien</span></a></li>
-                <li><a href="{{ url_for('dokter_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-book mr-3"></span><span class="menu-text">Dokter</span></a></li>
-                <li><a href="{{ url_for('janji_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-shopping-cart mr-3"></span><span class="menu-text">Janji</span></a></li>
-                <li><a href="{{ url_for('riwayat_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-pie-chart mr-3"></span><span class="menu-text">Riwayat</span></a></li>
-                <li><a href="{{ url_for('rawat_inap_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Rawat Inap</span></a></li>
-                <li><a href="{{ url_for('klinik_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Klinik</span></a></li>
-                <li><a href="{{ url_for('obat_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Obat</span></a></li>
-                <li><a href="{{ url_for('alat_medis_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Alat medis</span></a></li>
-      
+        <div class="side-inner">
+            <div class="logo-wrap">
+                <div class="logo">
+                    <span>C</span>
+                </div>
+                <span class="logo-text">Rumah Sakit Bahagia</span>
+            </div>
+            <div class="search-form">
+                <form action="#">
+                    <span class="wrap-icon">
+                        <span class="icon-search2"></span>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search...">
+                </form>
+            </div>
+            <div class="nav-menu">
+                <ul>
+                    <!-- List item untuk halaman Home -->
+                    <li>
+                        <a href="{{ url_for('home') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon icon-home2 mr-3"></span>
+                            <span class="menu-text">Home</span>
+                        </a>
+                    </li>
+                    <!-- List item untuk halaman Pasien -->
+                    <li {% if active_page == 'pasien_page' %}class="active"{% endif %}>
+                        <a href="{{ url_for('pasien_page') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon icon-user mr-3"></span>
+                            <span class="menu-text">Pasien</span>
+                        </a>
+                    </li>
+                    <!-- List item untuk halaman Dokter -->
+                    <li {% if active_page == 'dokter_page' %}class="active"{% endif %}>
+                        <a href="{{ url_for('dokter_page') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon bi bi-person-lines-fill mr-3"></span>
+                            <span class="menu-text">Dokter</span>
+                        </a>
+                    </li>
+                    <!-- List item untuk halaman Janji -->
+                    <li {% if active_page == 'janji_page' %}class="active"{% endif %}>
+                        <a href="{{ url_for('janji_page') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon icon-calendar mr-3"></span>
+                            <span class="menu-text">Janji</span>
+                        </a>
+                    </li>
+                    <!-- List item untuk halaman Riwayat -->
+                    <li {% if active_page == 'riwayat_page' %}class="active"{% endif %}>
+                        <a href="{{ url_for('riwayat_page') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon icon-history mr-3"></span>
+                            <span class="menu-text">Riwayat</span>
+                        </a>
+                    </li>
+                    <!-- List item untuk halaman Rawat Inap -->
+                    <li {% if active_page == 'rawat_inap_page' %}class="active"{% endif %}>
+                        <a href="{{ url_for('rawat_inap_page') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon icon-bed mr-3"></span>
+                            <span class="menu-text">Rawat Inap</span>
+                        </a>
+                    </li>
+                    <!-- List item untuk halaman Klinik -->
+                    <li {% if active_page == 'klinik_page' %}class="active"{% endif %}><a href="{{ url_for('klinik_page') }}" class="d-flex align-items-center"><span class="wrap-icon"><i class="fas fa-hospital mr-3"></i></span><span class="menu-text">Klinik</span></a></li>
+                    <!-- List item untuk halaman Obat -->
+                    <li {% if active_page == 'obat_page' %}class="active"{% endif %}>
+                        <a href="{{ url_for('obat_page') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon bi bi-asterisk mr-3"></span>
+                            <span class="menu-text">Obat</span>
+                        </a>
+                    </li>
+                    <!-- List item untuk halaman Alat Medis -->
+                    <li {% if active_page == 'alat_medis_page' %}class="active"{% endif %}>
+                        <a href="{{ url_for('alat_medis_page') }}" class="d-flex align-items-center">
+                            <span class="wrap-icon bi bi-clipboard-data mr-3"></span>
+                            <span class="menu-text">Alat Medis</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </aside>
 
-        </ul>
-      </div>
-    </div>
-    
-  </aside>
+    <!-- JavaScript untuk toggle sidebar -->
+    <script>
+    jQuery(document).ready(function($) {
+        $('.js-menu-toggle').click(function() {
+            $('.sidebar').toggleClass('open');
+            $('.content').toggleClass('content-active');
+            return false;
+        });
+    });
+    </script>
 
-<!-- <style>
-    .sidebar {
-        height: 100%;
-        width: 250px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #111;
-        padding-top: 20px;
+    <!-- CSS untuk styling hamburger menu dan sidebar -->
+    <style>
+    .burger {
+        display: inline-block;
+        width: 30px;
+        height: 20px;
+        position: relative;
+        cursor: pointer;
     }
-    .sidebar ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    .sidebar ul li {
-        padding: 8px;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    .sidebar ul li a {
-        text-decoration: none;
-        font-size: 18px;
-        color: white;
+
+    .burger span {
         display: block;
+        position: absolute;
+        height: 3px;
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 3px;
+        transition: all 0.25s ease-in-out;
     }
-    .sidebar ul li a:hover {
-        background-color: #575757;
+
+    .burger span:nth-child(1) {
+        top: 0;
     }
-</style> -->
+
+    .burger span:nth-child(2) {
+        top: 8px;
+    }
+
+    .burger span:nth-child(3) {
+        top: 16px;
+    }
+
+    .sidebar.open .burger span:nth-child(1) {
+        top: 8px;
+        transform: rotate(45deg);
+    }
+
+    .sidebar.open .burger span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .sidebar.open .burger span:nth-child(3) {
+        top: 8px;
+        transform: rotate(-45deg);
+    }
+
+    .content {
+        transition: margin-left 0.5s;
+    }
+
+    .content-active {
+        margin-left: 250px; /* Sesuaikan lebar sidebar */
+    }
+
+    /* Pastikan tidak ada pseudo-elemen tambahan */
+    .burger::before,
+    .burger::after,
+    .toggle .burger::before,
+    .toggle .burger::after {
+        content: none !important;
+    }
+
+    .sidebar {
+        background-color: #F5E1FD; /* Warna latar belakang sidebar */
+        z-index: 1001;
+    }
+
+    .logo span {
+        color: #6C6997; /* Warna teks logo */
+    }
+
+    .sidebar {
+            position: fixed;
+        }
+    </style>
+</body>
+</html>

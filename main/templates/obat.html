@@ -1,53 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}Klinik{% endblock %}
+{% block title %}Obat{% endblock %}
 
 {% block content %}
-<div class="container">
-    <aside class="sidebar">
-        <!-- Isi sidebar di sini -->
-        <div class="toggle">
-            <a href="#" class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
-                  <span></span>
-                </a>
-          </div>
-          <div class="side-inner">
-      
-            <div class="logo-wrap">
-              <div class="logo">
-                <span>C</span>
-              </div>
-              <span class="logo-text">Rumah Sakit Bahagia</span>
-            </div>
-              
-            <div class="search-form">
-              <form action="#">
-                <span class="wrap-icon">
-                  <span class="icon-search2"></span>
-                </span>
-                <input type="text" class="form-control" placeholder="Search...">
-              </form>
-            </div>
-            <div class="nav-menu">
-              <ul>
-                <li class="active"><a href="{{ url_for('home') }}" class="d-flex align-items-center"><span class="wrap-icon icon-home2 mr-3"></span><span class="menu-text">Home</span></a></li>
-                <li><a href="{{ url_for('pasien_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-videocam mr-3"></span><span class="menu-text">Pasien</span></a></li>
-                <li><a href="{{ url_for('dokter_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-book mr-3"></span><span class="menu-text">Dokter</span></a></li>
-                <li><a href="{{ url_for('janji_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-shopping-cart mr-3"></span><span class="menu-text">Janji</span></a></li>
-                <li><a href="{{ url_for('riwayat_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-pie-chart mr-3"></span><span class="menu-text">Riwayat</span></a></li>
-                <li><a href="{{ url_for('rawat_inap_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Rawat Inap</span></a></li>
-                <li><a href="{{ url_for('klinik_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Klinik</span></a></li>
-                <li><a href="{{ url_for('obat_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Obat</span></a></li>
-                <li><a href="{{ url_for('alat_medis_page') }}" class="d-flex align-items-center"><span class="wrap-icon icon-cog mr-3"></span><span class="menu-text">Alat medis</span></a></li>
-      
-              </ul>
-            </div>
-          </div>
-    </aside>
+    {% set active_page = 'obat' %}
+    {% include 'sidebar.html' %}
     <main class="content">
         <!-- Isi konten utama di sini -->
         <h1>Selamat datang di halaman obat!</h1>
         <p>Ini adalah konten spesifik untuk halaman obat.</p>
     </main>
-</div>
-{% endblock %}
+    {% endblock %}
+
+    {% block scripts %}
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% endblock %}
