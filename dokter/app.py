@@ -1,7 +1,10 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from flask_mysqldb import MySQL
+from datetime import datetime, timedelta
+from flask.json.provider import DefaultJSONProvider
 
-app= Flask(__name__)
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
 
 app.config['MYSQL_HOST'] = 'tubes-nabilamelsyana5-c7f0.a.aivencloud.com'
 app.config['MYSQL_USER'] = 'avnadmin'
@@ -11,82 +14,56 @@ app.config['MYSQL_PORT'] = 26484
 
 mysql = MySQL(app)
 
-@app.route('/dokter', methods=['GET', 'POST'])
-def dokter():
+class CustomJSONProvider(DefaultJSONProvider):
+    def default(self, obj):
+        if isinstance(obj, timedelta):
+            return str(obj)
+        return super().default(obj)
+
+app.json = CustomJSONProvider(app)
+
+@app.route('/dokter', methods=['GET'])
+def get_dokter():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM dokter")
+    kolom = [i[0] for i in cursor.description]
+    data = [dict(zip(kolom, row)) for row in cursor.fetchall()]
+    cursor.close()
+    return jsonify(data)
+
+@app.route('/edit_dokter/<int:dokter_id>', methods=['GET', 'POST'])
+def edit_dokter(dokter_id):
+    cursor = mysql.connection.cursor()
     if request.method == 'GET':
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM dokter")
-        kolom = [i[0] for i in cursor.description]
-        data = []
-        for row in cursor.fetchall():
-            data.append(dict(zip(kolom, row)))
+        # Ambil data dokter dari database berdasarkan ID
+        cursor.execute("SELECT * FROM dokter WHERE dokter_id = %s", (dokter_id,))
+        dokter = cursor.fetchone()
         cursor.close()
-        return jsonify(data)
-    
-    elif request.method =='POST':
-        nama = request.json['nama']
-        poli = request.json['poli']
-        
-
-        cursor = mysql.connection.cursor()
-        sql = "INSERT INTO dokter (nama, poli) VALUES (%s,%s)"
-
-        val = (nama, poli)
-        cursor.execute(sql,val)
-
-        mysql.connection.commit()
-
-        return jsonify({'message':'data berhasil masuk'})
-        cursor.close()
-    
-
-@app.route('/detaildokter',methods =['GET'])
-def detaildokter():
-    if 'dokter_id' in request.args:
-        cursor = mysql.connection.cursor()
-        sql = "SELECT * FROM dokter WHERE dokter_id = %s"
-        val = (request.args['dokter_id'])
-        cursor.execute(sql,val)
-        kolom = [i[0] for i in cursor.description]
-        data = []
-        for row in cursor.fetchall():
-            data.append(dict(zip(kolom,row)))
-
-        
-        return jsonify(data)
-        cursor.close()
-
-
-@app.route('/editdokter', methods = ['PUT'])
-def editdokter():
-    if 'dokter_id' in request.args:
-        data = request.get_json()
-
-        cursor = mysql.connection.cursor()
-        sql = "UPDATE dokter SET nama = %s, poli = %s WHERE dokter_id = %s"
-        val = (data['nama'], data['poli'],request.args['dokter_id'])
-        cursor.execute(sql, val)
-        mysql.connection.commit()
-        cursor.close()  
-
-        return jsonify({'message': 'data berhasil diubah'})
-    return jsonify({'error': 'dokter_id is required'}), 400
-
-@app.route('/deletedokter', methods=['DELETE'])
-def deletedokter():
-    if 'dokter_id' in request.args:
-        dokter_id = request.args['dokter_id']
-
-        cursor = mysql.connection.cursor()
-        sql = "DELETE FROM dokter WHERE dokter_id = %s"
-        val = (dokter_id,)
-        cursor.execute(sql, val)
+        return render_template('edit_dokter.html', dokter=dokter)
+    elif request.method == 'POST':
+        # Ambil data yang diperbarui dari formulir
+        nama = request.form['nama']
+        poli = request.form['poli']
+        # Update data dokter dalam database
+        cursor.execute("UPDATE dokter SET nama = %s, poli = %s WHERE dokter_id = %s", (nama, poli, dokter_id))
         mysql.connection.commit()
         cursor.close()
+        flash('Data dokter berhasil diperbarui!')
+        return redirect(url_for('get_dokter'))
 
-        return jsonify({'message': 'Data dokter berhasil dihapus'})
 
-    return jsonify({'error': 'dokter_id is required'}), 400
+@app.route('/delete_dokter/<int:dokter_id>', methods=['DELETE'])
+def delete_dokter(dokter_id):
+    if request.method == 'DELETE':
+        cursor = mysql.connection.cursor()
+        cursor.execute("DELETE FROM dokter WHERE dokter_id = %s", (dokter_id,))
+        mysql.connection.commit()
+        cursor.close()
+        flash('Data dokter berhasil dihapus!')
+        return redirect(url_for('get_dokter'))
+    else:
+        return "Metode yang diperlukan tidak didukung untuk rute ini."
+
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 5002, debug = True)
+    app.run(host='0.0.0.0', port=5002, debug=True)

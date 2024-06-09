@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Tambah Klinik{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Tambah Klinik</h1>
+    <form action="{{ url_for('add_klinik') }}" method="post">
+        <label for="nomer">No:</label>
+        <input type="number" id="klinik_id" name="klinik_id"><br><br>
+        <label for="nama_klinik">Nama Klinik:</label>
+        <input type="text" id="nama_klinik" name="nama_klinik"><br><br>
+        <label for="alamat_klinik">Alamat Klinik:</label>
+        <input type="text" id="alamat_klinik" name="alamat_klinik"><br><br>
+        <label for="no_telepon">No Telepon:</label>
+        <input type="text" id="no_telepon" name="no_telepon"><br><br>
+        <input type="submit" value="Tambah Klinik">
+    </form>
+</div>
+{% endblock %}

@@ -45,9 +45,81 @@
           </div>
     </aside>
     <main class="content">
-        <!-- Isi konten utama di sini -->
-        <h1>Selamat datang di halaman alat medis!</h1>
-        <p>Ini adalah konten spesifik untuk halaman alat medis.</p>
-    </main>
-</div>
+      <h1>Selamat datang di halaman alat medis!</h1>
+      <p>Ini adalah konten spesifik untuk halaman alat medis.</p>
+      <h2>Daftar Klinik</h2>
+      <table class="styled-table">
+          <thead>
+              <tr>
+                  <th>No</th>
+                  <th>Nama Alat</th>
+                  <th>Deskripsi</th>
+                  <th>Jumlah</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for fungsi in medis %}
+              <tr>
+                <td>{{ fungsi['alat_id'] }}</td>
+                <td>{{ fungsi['nama_alat'] }}</td>
+                <td>{{ fungsi['deskripsi'] }}</td>
+                <td>{{ fungsi['jumlah'] }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      
+<a href="#" class="btn-add-dokter">Add Alat</a>
+  </main>  
+  </div>
+  
+  <style>
+      .container {
+          display: flex;
+      }
+      .styled-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 25px 0;
+          font-size: 18px;
+          text-align: left;
+      }
+      .styled-table thead tr {
+          background-color: #009879;
+          color: #ffffff;
+          text-align: left;
+      }
+      .styled-table th, .styled-table td {
+          padding: 12px 15px;
+      }
+      .styled-table tbody tr {
+          border-bottom: 1px solid #dddddd;
+      }
+      .styled-table tbody tr:nth-of-type(even) {
+          background-color: #f3f3f3;
+      }
+      .styled-table tbody tr:last-of-type {
+          border-bottom: 2px solid #009879;
+      }
+      .btn-edit, .btn-delete, .btn-add-dokter{
+          padding: 6px 12px;
+          color: #fff;
+          text-decoration: none;
+          border-radius: 4px;
+          margin-right: 5px;
+      }
+      .btn-edit {
+          background-color: #4CAF50;
+      }
+      .btn-delete {
+          background-color: #f44336;
+      }
+      .btn-add-dokter{
+          background-color: blue;
+      }
+      .btn-edit:hover, .btn-delete:hover {
+          opacity: 0.8;
+      }
+  </style>
 {% endblock %}
