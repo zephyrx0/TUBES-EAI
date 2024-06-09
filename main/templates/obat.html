@@ -144,8 +144,6 @@
                         <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ obat.obat_id }}">
                             <i class="fas fa-trash"></i>
                         </button>
-                        
-
                     </td>
                 </tr>
                 {% endfor %}
@@ -197,52 +195,48 @@
     </div>
 
     <!-- Modal Edit -->
-    <div class="modal fade" id="editModal{{ obat.obat_id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ obat.obat_id }}" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Data Obat</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm">
-                    <div class="form-group">
-                        <label for="edit_obat_id">Id Obat</label>
-                        <input type="text" class="form-control" id="edit_obat_id">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_nama_obat">Nama Obat</label>
-                        <input type="text" class="form-control" id="edit_nama_obat">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_deskripsi">Deskripsi</label>
-                        <textarea class="form-control" id="edit_deskripsi" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_dosis">Dosis</label>
-                        <input type="text" class="form-control" id="edit_dosis">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_efek_samping">Efek Samping</label>
-                        <textarea class="form-control" id="edit_efek_samping" rows="2"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveChangesEdit" data-obat_id="{{ obat.obat_id }}">Save changes</button>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Data Obat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label for="edit_obat_id">Id Obat</label>
+                            <input type="text" class="form-control" id="edit_obat_id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_nama_obat">Nama Obat</label>
+                            <input type="text" class="form-control" id="edit_nama_obat">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_deskripsi">Deskripsi</label>
+                            <textarea class="form-control" id="edit_deskripsi" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_dosis">Dosis</label>
+                            <input type="text" class="form-control" id="edit_dosis">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_efek_samping">Efek Samping</label>
+                            <textarea class="form-control" id="edit_efek_samping" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesEdit">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-{% endblock %}
-
-{% block scripts %}
-    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
@@ -275,31 +269,31 @@
                 });
             });
 
-            function edit_obat(obat_id) {
+            window.edit_obat = function(obat_id) {
                 $.ajax({
                     url: `http://127.0.0.1:5000/detailobat/${obat_id}`,
                     type: 'GET',
                     success: function(response) {
                         if (response && !response.error) {
+                            $('#edit_obat_id').val(response.obat_id);
                             $('#edit_nama_obat').val(response.nama_obat);
                             $('#edit_deskripsi').val(response.deskripsi);
                             $('#edit_dosis').val(response.dosis);
                             $('#edit_efek_samping').val(response.efek_samping);
                             $('#saveChangesEdit').data('obat_id', obat_id); // Menyimpan obat_id ke dalam data-obat_id
-                            $('#editModal').modal('show');
+                            $('#editModal').modal('show'); // Menampilkan modal
                         } else {
                             console.log("Data obat tidak ditemukan");
                         }
-                        location.reload();
                     },
                     error: function(xhr, status, error) {
                         console.error("Error:", error);
                     }
                 });
-            }
+            };
 
             $('#saveChangesEdit').click(function() {
-                var obat_id = $('#edit_obat_id').val();
+                var obat_id = $(this).data('obat_id');
                 var data = {
                     obat_id: $('#edit_obat_id').val(),
                     nama_obat: $('#edit_nama_obat').val(),
@@ -340,7 +334,6 @@
                                 console.log("Response or message property is undefined");
                                 location.reload();
                             }
-                            location.reload();
                         },
                         error: function(xhr, status, error) {
                             console.error("Error:", error);
@@ -351,7 +344,6 @@
             });
 
         });
-
     </script>
 {% endblock %}
 </body>

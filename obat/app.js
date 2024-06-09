@@ -48,19 +48,19 @@ app.post('/tambahobat', (req, res) => {
 });
 
 app.get('/detailobat/:obat_id', async (req, res) => {
-    const obatId = req.params.obat_id;
+    const obatId = req.params.obat_id;  // Use obat_id as string
     try {
-      const obat = await obatCollection.findOne({ obat_id: obatId }, { projection: { _id: 0 } });
-      if (obat) {
-        res.status(200).json(obat);
-      } else {
-        res.status(404).json({ error: 'obat tidak ditemukan' });
-      }
+        const obat = await obatCollection.findOne({ obat_id: obatId }, { projection: { _id: 0 } });
+        if (obat) {
+            res.status(200).json(obat);
+        } else {
+            res.status(404).json({ error: 'Obat tidak ditemukan' });
+        }
     } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Terjadi kesalahan pada server' });
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Terjadi kesalahan pada server' });
     }
-  });
+});
 
 
   app.put('/editobat/:obat_id', (req, res) => {
