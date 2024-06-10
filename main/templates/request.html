@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Request{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+        }
+        body {
+            background-color: #F5E1FD;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 170px;
+            width: 1400px;
+            height: 350px;
+            position: relative;
+            margin-top: 100px;
+            z-index: 2;
+            align-items: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #333;
+        }
+        .btn-tambah {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ECA869;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+        .btn-tambah:hover {
+            background-color: #FF7B2A;
+        }
+        table {
+            width: 95%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #6C6997;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .hiasan1 {
+            position: absolute;
+            top: -101px;
+            right: 0px;
+            z-index: 1;
+            width: 400px;
+        }
+        .hiasan2 {
+            position: absolute;
+            bottom: -92px;
+            left: 80px;
+            z-index: 1;
+            width: 450px;
+        }
+    </style>
+</head>
+<body>
+
+{% block content %}
+    {% set active_page = 'request' %}
+    {% include 'sidebar.html' %}
+    <img src="static/images/hiasan1.png" alt="hiasan1" class="hiasan1">
+    <main class="content">
+        <div class="header-content">
+            <h1>Data Request</h1>
+            <button type="button" class="btn-tambah" data-toggle="modal" data-target="#tambahModal">Tambah Data</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Request By</th>
+                    <th>Jenis</th>
+                    <th>Nama</th>
+                    <th>Deksripsi</th>
+                    <th>Jumlah</th>
+                    <th>Status</th>
+                    <th>Approved By</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Isi tabel request -->
+                {% for req in req %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ req.reqby }}</td>
+                    <td>{{ req.jenis }}</td>
+                    <td>{{ req.nama }}</td>
+                    <td>{{ req.deskripsi }}</td>
+                    <td>{{ req.jumlah }}</td>
+                    <td>{{ req.status }}</td>
+                    <td>{{ req.appby }}</td>
+                    <td>
+                        <!-- Tombol Edit dengan ikon -->
+                        <button type="button" class="btn btn-primary btn-sm" onclick="edit_request('{{ req.idReq }}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ req.idReq }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <img src="static/images/hiasan2.png" alt="hiasan2" class="hiasan2">
+
+    <!-- Modal -->
+    <div class="modal fade" id="tambahModal" tabindex="-1" role="dialog" aria-labelledby="tambahModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahModalLabel">Tambah Data Request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="tambahForm">
+                        <div class="form-group">
+                            <label for="jenis">Jenis</label>
+                            <select class="form-control" id="jenis">
+                                <option value="blood">Blood</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama">Nama</label>
+                            <input type="text" class="form-control" id="nama">
+                        </div>
+                        <div class="form-group">
+                            <label for="deskripsi">Deskripsi</label>
+                            <input type="text" class="form-control" id="deskripsi">
+                        </div>
+                        <div class="form-group">
+                            <label for="jumlah">Jumlah</label>
+                            <input type="number" class="form-control" id="jumlah">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+<div class="modal fade" id="editModal{{ req.idReq }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ req.idReq }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel{{ req.idReq }}">Edit Data Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm{{ req.idReq }}">
+                    <div class="form-group">
+                        <label for="edit_jenis">Jenis</label>
+                        <select class="form-control" id="edit_jenis" disabled>
+                            <option value="blood">Blood</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_nama">Nama</label>
+                        <input type="text" class="form-control" id="edit_nama" value="{{ req.nama }}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_deskripsi">Deskripsi</label>
+                        <input type="text" class="form-control" id="edit_deskripsi" value="{{ req.deskripsi }}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_jumlah">Jumlah</label>
+                        <input type="number" class="form-control" id="edit_jumlah" value="{{ req.jumlah }}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_status">Status</label>
+                        <select class="form-control" id="edit_status">
+                            <option value="Pending">Pending</option>
+                            <option value="Reject">Reject</option>
+                            <option value="Approved">Approved</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_appby" hidden>Approved By</label>
+                        <select class="form-control" id="edit_appby">
+                            <option value="Bahagia">Bahagia</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveChangesEdit" data-idReq="{{ req.idReq }}">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+$(document).ready(function() {
+    console.log("Document ready!");
+    
+    $('#saveChanges').click(function() {
+        console.log("Save changes clicked!");
+        var data = {
+            jenis: $('#jenis').val(),
+            nama: $('#nama').val(),
+            deskripsi: $('#deskripsi').val(),
+            jumlah: $('#jumlah').val(),
+        };
+        $.ajax({
+            url: 'http://127.0.0.1:5000/tambahrequest',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response && response.message) {
+                    alert(response.message);
+                } else {
+                    console.log("Response or message property is undefined");
+                }
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+});
+
+window.edit_request = function (idReq) {
+    $.ajax({
+        url: `http://127.0.0.1:5000/detailrequest/${idReq}`,
+        type: 'GET',
+        success: function(response) {
+            if (response && !response.error) {
+                $('#edit_jenis').val(response.jenis);
+                $('#edit_nama').val(response.nama);
+                $('#edit_deskripsi').val(response.deskripsi);
+                $('#edit_jumlah').val(response.jumlah);
+                $('#edit_status').val(response.status);
+                $('#edit_appby').val(response.appby);
+                $('#saveChangesEdit').data('idReq', idReq); // Store idReq in data-idReq
+                $('#editModal').modal('show');
+            } else {
+                console.log("Data request tidak ditemukan");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+}
+
+$('#saveChangesEdit').click(function() {
+    var idReq = $(this).data('idReq'); // Retrieve idReq from data-idReq
+    var data = {
+        status: $('#edit_status').val(),
+        appby: $('#edit_appby').val()
+    };
+    $.ajax({
+        url: `http://127.0.0.1:5000/editrequest/${idReq}`, // Use idReq in URL
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response && response.message) {
+                alert(response.message);
+            } else {
+                console.log("Response or message property is undefined");
+            }
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+});
+
+$(document).on('click', '.btn-delete', function() {
+    var idReq = $(this).data('id');
+    if (confirm('Apakah Anda yakin ingin menghapus data request ini?')) {
+        $.ajax({
+            url: `http://127.0.0.1:5000/deleterequest/${idReq}`,
+            type: 'DELETE',
+            success: function(response) {
+                if (response && response.message) {
+                    alert(response.message);
+                    location.reload(); // Reload page after successful deletion
+                } else {
+                    console.log("Response or message property is undefined");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+});
+
+
+    </script>
+{% endblock %}
+</body>
+</html>

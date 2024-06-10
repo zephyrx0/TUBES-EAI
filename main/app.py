@@ -583,5 +583,70 @@ def delete_riwayat(riwayat_id):
         return jsonify({'error': str(e)}), 500
 
 
+#layanan request
+def get_request():
+    response = requests.get('http://127.0.0.1:5100/request')
+    return response.json()
+
+@app.route('/request', methods=['GET'])
+def request_page():
+    try:
+        response = requests.get('http://127.0.0.1:5100/request')
+        req = response.json()
+        return render_template('request.html', req=req, active_page='request_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to request service", 500
+
+@app.route('/tambahrequest', methods=['POST'])
+def tambah_request():
+    try:
+        response = requests.post('http://127.0.0.1:5100/tambahrequest', json=request.json)
+        req = response.json()
+        return render_template('request.html', req=req, active_page='request_page')
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to request service", 500
+    
+@app.route('/editrequest/<int:idReq>', methods=['PUT'])
+def edit_request(idReq):
+    try:
+        data = request.json
+        response = requests.put(f'http://127.0.0.1:5100/updaterequest?id={idReq}', json=data)
+        req = response.json()
+        return render_template('request.html', req=req, active_page='request_page')
+    except requests.exceptions.ConnectionError:
+        logger.error("Could not connect to riwayat service")
+        return "Could not connect to riwayat service", 500
+    except requests.exceptions.Timeout:
+        logger.error("The request to riwayat service timed out")
+        return "The request to riwayat service timed out", 500
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"HTTP error occurred: {e}")
+        return f"HTTP error occurred: {e}", 500
+    except requests.exceptions.RequestException as e:
+        logger.error(f"An error occurred: {e}")
+        return f"An error occurred: {e}", 500
+
+@app.route('/detailrequest/<int:idReq>', methods=['GET'])
+def detailrequest_middleware(idReq):
+    try:
+        response = requests.get(f'http://127.0.0.1:5100/request/{idReq}')
+        req = response.json()
+        return jsonify(req)
+    except requests.exceptions.ConnectionError:
+        return "Could not connect to request service", 500
+
+
+@app.route('/deleterequest/<int:idReq>', methods=['DELETE'])
+def delete_request(idReq):
+    try:
+        response = requests.delete(f'http://127.0.0.1:5100/hapusrequest?id={idReq}')
+        if response.status_code == 200:
+            return jsonify({'message': 'Data request berhasil dihapus'})
+        else:
+            return jsonify({'error': 'Gagal menghapus data'}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
