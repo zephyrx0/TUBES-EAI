@@ -1,4 +1,4 @@
------------------------------------------------------- Langkah-langkah Membuka Folder Tugas Besar ------------------------------------------------------
+---------------------------------------------------- Langkah-langkah Membuka Folder Tugas Besar ----------------------------------------------------
 
 1.	File Python:
 Untuk folder dengan file app.py (dokter, janji, main, pasien, rawat inap, riwayat, user), buka terminal di Visual Studio Code dan jalankan perintah berikut:
@@ -22,9 +22,11 @@ Untuk menampilkan aplikasi, bisa mengklik link yang muncul saat menjalankan app.
 http://127.0.0.1:5000
 -----------------------------------------------------------------
 
-______________________________________________________________________
 
-------------------------- Pengaplikasian ------------------------
+____________________________________________________________________________________________________________________________________________________
+
+
+------------------------------------------------------------------ Pengaplikasian ------------------------------------------------------------------
 
 Langkah-langkah untuk Menjalankan Folder dengan File Python
 Buka terminal di Visual Studio Code (jika belum terbuka).
